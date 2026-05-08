@@ -3,420 +3,793 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>量化你的生活</title>
-  
-  <!-- Google Fonts -->
+  <title>日知录 - 量化你的生活</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Chart.js -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  
   <style>
-    /* ==================== CSS Variables ==================== */
     :root {
-      --bg-primary: #FDFBF7;
-      --bg-secondary: #F5F1EA;
+      --primary: #2D5A4A;
+      --primary-light: #3D7A6A;
+      --primary-dark: #1D4A3A;
+      --accent: #C75146;
+      --accent-light: #E8716A;
+      --income: #4CAF50;
+      --income-bg: #E8F5E9;
+      --expense: #757575;
+      --expense-bg: #F5F5F5;
+      --bg-base: #FDFBF7;
       --bg-card: #FFFFFF;
-      
-      --accent-income: #2D936C;
-      --accent-expense: #E07A5F;
-      --accent-primary: #3D5A80;
-      --accent-secondary: #EE6C4D;
-      --accent-study: #7B68EE;
-      
-      --text-primary: #2C3E50;
-      --text-secondary: #6B7C8A;
-      --text-muted: #A0AEC0;
-      
-      --border-light: #E8E4DD;
-      --shadow-soft: 0 2px 12px rgba(44, 62, 80, 0.08);
-      --shadow-hover: 0 6px 24px rgba(44, 62, 80, 0.12);
-      
+      --bg-hover: #F5F1EB;
+      --bg-active: #EDE8E0;
+      --text-primary: #2C2C2C;
+      --text-secondary: #6B6B6B;
+      --text-muted: #9B9B9B;
+      --text-inverse: #FFFFFF;
+      --warning: #F5A623;
+      --info: #5BA4E6;
+      --success: #4CAF50;
+      --tag-羊毛: #FFE082;
+      --tag-投资: #B3E5FC;
+      --tag-省钱: #C8E6C9;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
-      --radius-xl: 24px;
     }
 
-    /* ==================== Reset & Base ==================== */
-    *, *::before, *::after {
-      box-sizing: border-box;
+    * {
       margin: 0;
       padding: 0;
-    }
-
-    html {
-      font-size: 16px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      box-sizing: border-box;
     }
 
     body {
-      font-family: 'Noto Sans SC', sans-serif;
-      background: var(--bg-primary);
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg-base);
       color: var(--text-primary);
-      min-height: 100vh;
       line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* ==================== App Container ==================== */
-    .app {
-      max-width: 1200px;
-      margin: 0 auto;
+    .app-container {
+      max-width: 100%;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background: var(--bg-primary);
     }
 
-    /* ==================== Header ==================== */
+    /* Header */
     .header {
       background: var(--bg-card);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
       padding: 16px 24px;
-      border-bottom: 1px solid var(--border-light);
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: var(--shadow-sm);
     }
 
-    .header-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.5rem;
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: "Noto Serif SC", serif;
+      font-size: 24px;
       font-weight: 700;
-      text-align: center;
-      color: var(--accent-primary);
-      margin-bottom: 12px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .date-nav {
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+
+    .header-date {
+      font-family: "Roboto Mono", monospace;
+      font-size: 14px;
+      color: var(--text-secondary);
+      background: var(--bg-hover);
+      padding: 8px 16px;
+      border-radius: 20px;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding-bottom: 100px;
+    }
+
+    .panel {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Date Selector */
+    .date-selector {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 16px;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
     }
 
-    .date-nav button {
-      background: var(--bg-secondary);
-      border: none;
+    .date-nav-btn {
       width: 40px;
       height: 40px;
+      border: none;
+      background: var(--bg-hover);
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
+      color: var(--text-secondary);
     }
 
-    .date-nav button:hover {
-      background: var(--accent-primary);
+    .date-nav-btn:hover {
+      background: var(--primary);
       color: white;
-    }
-
-    .date-nav button svg {
-      width: 20px;
-      height: 20px;
     }
 
     .current-date {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      min-width: 180px;
       text-align: center;
+      min-width: 200px;
     }
 
-    .today-badge {
-      font-size: 0.75rem;
-      background: var(--accent-income);
-      color: white;
-      padding: 2px 8px;
-      border-radius: 12px;
-      margin-left: 8px;
-      vertical-align: middle;
-    }
-
-    /* ==================== Main Content ==================== */
-    .main-content {
-      flex: 1;
-      padding: 24px;
-      padding-bottom: 100px;
-      overflow-y: auto;
-    }
-
-    .page {
-      display: none;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ==================== Cards ==================== */
-    .card {
-      background: var(--bg-card);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow-soft);
-      transition: all 0.2s ease;
-    }
-
-    .card:hover {
-      box-shadow: var(--shadow-hover);
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .card-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1rem;
+    .current-date-main {
+      font-family: "Noto Serif SC", serif;
+      font-size: 20px;
       font-weight: 600;
       color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
-    /* ==================== Summary Bar ==================== */
-    .summary-bar {
+    .current-date-weekday {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Summary Cards */
+    .summary-cards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 16px;
       margin-bottom: 24px;
     }
 
-    .summary-item {
-      text-align: center;
-      padding: 12px;
+    .summary-card {
       background: var(--bg-card);
       border-radius: var(--radius-md);
-      box-shadow: var(--shadow-soft);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .summary-item.income .summary-value {
-      color: var(--accent-income);
+    .summary-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
 
-    .summary-item.expense .summary-value {
-      color: var(--accent-expense);
-    }
-
-    .summary-item.balance .summary-value {
-      color: var(--accent-primary);
+    .summary-card.income .summary-value { color: var(--income); }
+    .summary-card.expense .summary-value { color: var(--expense); }
+    .summary-card.balance .summary-value {
+      color: var(--primary);
+      font-weight: 700;
     }
 
     .summary-label {
-      font-size: 0.75rem;
+      font-size: 13px;
       color: var(--text-muted);
-      margin-bottom: 4px;
+      margin-bottom: 8px;
     }
 
     .summary-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.1rem;
-      font-weight: 500;
+      font-family: "Roboto Mono", monospace;
+      font-size: 24px;
+      font-weight: 600;
     }
 
-    /* ==================== Buttons ==================== */
-    .btn {
-      padding: 8px 16px;
-      border: none;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-family: 'Noto Sans SC', sans-serif;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    /* Section */
+    .section {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
     }
 
-    .btn-primary {
-      background: var(--accent-primary);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: #2c4a6e;
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-    }
-
-    .btn-secondary:hover {
-      background: var(--border-light);
-    }
-
-    .btn-income {
-      background: var(--accent-income);
-      color: white;
-    }
-
-    .btn-expense {
-      background: var(--accent-expense);
-      color: white;
-    }
-
-    .btn-danger {
-      background: #E53E3E;
-      color: white;
-    }
-
-    .btn-danger:hover {
-      background: #C53030;
-    }
-
-    .btn-sm {
-      padding: 6px 12px;
-      font-size: 0.75rem;
-    }
-
-    /* ==================== Record List ==================== */
-    .record-list {
+    .section-header {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: "Noto Serif SC", serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
       gap: 8px;
+    }
+
+    .section-title svg {
+      color: var(--primary);
+    }
+
+    /* Record List */
+    .record-list {
+      list-style: none;
     }
 
     .record-item {
       display: flex;
       align-items: center;
-      padding: 12px;
-      background: var(--bg-secondary);
-      border-radius: var(--radius-sm);
-      transition: all 0.2s ease;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      margin-bottom: 8px;
+      background: var(--bg-base);
+      transition: all 0.2s;
+      cursor: pointer;
     }
 
     .record-item:hover {
-      background: var(--border-light);
+      background: var(--bg-hover);
     }
 
     .record-icon {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-right: 12px;
-      font-size: 1.1rem;
+      font-size: 18px;
     }
 
     .record-icon.income {
-      background: rgba(45, 147, 108, 0.15);
-      color: var(--accent-income);
+      background: var(--income-bg);
+      color: var(--income);
     }
 
     .record-icon.expense {
-      background: rgba(224, 122, 95, 0.15);
-      color: var(--accent-expense);
+      background: var(--expense-bg);
+      color: var(--expense);
     }
 
-    .record-content {
+    .record-info {
       flex: 1;
     }
 
     .record-category {
       font-weight: 500;
-      font-size: 0.9rem;
+      color: var(--text-primary);
+      margin-bottom: 2px;
     }
 
     .record-note {
-      font-size: 0.8rem;
+      font-size: 13px;
       color: var(--text-muted);
     }
 
     .record-amount {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1rem;
-      font-weight: 500;
-      margin-right: 12px;
+      font-family: "Roboto Mono", monospace;
+      font-size: 18px;
+      font-weight: 600;
     }
 
-    .record-amount.income {
-      color: var(--accent-income);
-    }
-
-    .record-amount.expense {
-      color: var(--accent-expense);
-    }
+    .record-amount.income { color: var(--income); }
+    .record-amount.expense { color: var(--expense); }
 
     .record-delete {
-      opacity: 0;
-      background: none;
+      margin-left: 12px;
+      width: 32px;
+      height: 32px;
       border: none;
-      color: var(--accent-expense);
+      background: transparent;
+      color: var(--text-muted);
       cursor: pointer;
-      padding: 4px;
-      transition: opacity 0.2s;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      opacity: 0;
     }
 
     .record-item:hover .record-delete {
       opacity: 1;
     }
 
-    /* ==================== Todo Items ==================== */
-    .todo-item {
+    .record-delete:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+    }
+
+    .empty-state svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-state p {
+      font-size: 15px;
+    }
+
+    /* Add Button */
+    .add-btn {
+      width: 48px;
+      height: 48px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border-radius: 50%;
+      cursor: pointer;
       display: flex;
       align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-md);
+      transition: all 0.2s;
+      font-size: 24px;
+    }
+
+    .add-btn:hover {
+      transform: scale(1.1);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      padding: 24px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: scale(0.9) translateY(20px);
+      transition: transform 0.3s;
+    }
+
+    .modal-overlay.active .modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-family: "Noto Serif SC", serif;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: var(--bg-hover);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .type-switch {
+      display: flex;
+      gap: 8px;
+    }
+
+    .type-btn {
+      flex: 1;
       padding: 12px;
-      background: var(--bg-secondary);
-      border-radius: var(--radius-sm);
-      transition: all 0.2s ease;
+      border: 2px solid var(--bg-hover);
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .type-btn.active {
+      border-color: var(--primary);
+      background: rgba(45, 90, 74, 0.05);
+      color: var(--primary);
+    }
+
+    .type-btn.income.active {
+      border-color: var(--income);
+      background: var(--income-bg);
+      color: var(--income);
+    }
+
+    .type-btn.expense.active {
+      border-color: var(--expense);
+      background: var(--expense-bg);
+      color: var(--expense);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--bg-hover);
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+      background: var(--bg-card);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .amount-input {
+      font-family: "Roboto Mono", monospace;
+      font-size: 28px !important;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--bg-hover);
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-family: inherit;
+      background: var(--bg-card);
+      cursor: pointer;
+    }
+
+    .form-textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--bg-hover);
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-textarea:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px 24px;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-secondary {
+      background: var(--bg-hover);
+      color: var(--text-secondary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-active);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Progress Bar */
+    .progress-section {
+      margin-top: 16px;
+    }
+
+    .progress-item {
+      margin-bottom: 16px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 8px;
     }
 
-    .todo-checkbox {
-      width: 22px;
-      height: 22px;
-      border: 2px solid var(--border-light);
+    .progress-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .progress-value {
+      font-family: "Roboto Mono", monospace;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .progress-bar {
+      height: 12px;
+      background: var(--bg-hover);
       border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.5s ease, background 0.3s;
+    }
+
+    .progress-fill.low { background: linear-gradient(90deg, #81C784, #4CAF50); }
+    .progress-fill.medium { background: linear-gradient(90deg, #FFD54F, #FFC107); }
+    .progress-fill.high { background: linear-gradient(90deg, #E57373, #F44336); }
+
+    .budget-input-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .budget-input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid var(--bg-hover);
+      border-radius: var(--radius-sm);
+      font-family: "Roboto Mono", monospace;
+      font-size: 14px;
+    }
+
+    .budget-save-btn {
+      padding: 10px 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* Tag Notes */
+    .tag-notes {
+      margin-top: 16px;
+    }
+
+    .tag-note-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 12px;
+      background: var(--bg-base);
+      border-radius: var(--radius-md);
+      margin-bottom: 8px;
+    }
+
+    .tag-badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-right: 10px;
+      white-space: nowrap;
+    }
+
+    .tag-badge.羊毛 { background: var(--tag-羊毛); color: #8D6E00; }
+    .tag-badge.投资 { background: var(--tag-投资); color: #0277BD; }
+    .tag-badge.省钱 { background: var(--tag-省钱); color: #2E7D32; }
+
+    .tag-note-text {
+      flex: 1;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .tag-note-delete {
+      width: 24px;
+      height: 24px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: all 0.2s;
+    }
+
+    .tag-note-item:hover .tag-note-delete {
+      opacity: 1;
+    }
+
+    .tag-note-delete:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .tag-selector {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .tag-option {
+      padding: 8px 16px;
+      border: 2px solid var(--bg-hover);
+      border-radius: 16px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--bg-card);
+    }
+
+    .tag-option.selected {
+      border-color: var(--primary);
+      background: rgba(45, 90, 74, 0.05);
+    }
+
+    .tag-option.羊毛.selected { border-color: #FFB300; background: var(--tag-羊毛); }
+    .tag-option.投资.selected { border-color: #03A9F4; background: var(--tag-投资); }
+    .tag-option.省钱.selected { border-color: #4CAF50; background: var(--tag-省钱); }
+
+    /* Todo List */
+    .todo-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--bg-base);
+      border-radius: var(--radius-md);
+      margin-bottom: 8px;
+      transition: all 0.2s;
+    }
+
+    .todo-checkbox {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
       margin-right: 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
       flex-shrink: 0;
     }
 
-    .todo-checkbox:hover {
-      border-color: var(--accent-primary);
+    .todo-checkbox.checked {
+      background: var(--primary);
     }
 
-    .todo-checkbox.checked {
-      background: var(--accent-income);
-      border-color: var(--accent-income);
+    .todo-checkbox.checked::after {
+      content: "✓";
       color: white;
+      font-size: 14px;
+      font-weight: bold;
     }
 
     .todo-text {
       flex: 1;
-      font-size: 0.9rem;
+      font-size: 15px;
     }
 
     .todo-text.completed {
@@ -425,17 +798,27 @@
     }
 
     .todo-delete {
-      opacity: 0;
-      background: none;
+      width: 28px;
+      height: 28px;
       border: none;
-      color: var(--accent-expense);
+      background: transparent;
+      color: var(--text-muted);
       cursor: pointer;
-      padding: 4px;
-      transition: opacity 0.2s;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: all 0.2s;
     }
 
     .todo-item:hover .todo-delete {
       opacity: 1;
+    }
+
+    .todo-delete:hover {
+      background: var(--accent);
+      color: white;
     }
 
     .todo-input-group {
@@ -446,47 +829,63 @@
 
     .todo-input {
       flex: 1;
-      padding: 10px 14px;
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-sm);
-      font-family: 'Noto Sans SC', sans-serif;
-      font-size: 0.9rem;
-      transition: border-color 0.2s;
+      padding: 12px 16px;
+      border: 2px solid var(--bg-hover);
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-family: inherit;
     }
 
     .todo-input:focus {
       outline: none;
-      border-color: var(--accent-primary);
+      border-color: var(--primary);
     }
 
-    /* ==================== Study Section ==================== */
+    .todo-add-btn {
+      padding: 12px 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    /* Study Section */
     .study-display {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+      text-align: center;
+      padding: 32px;
+      background: linear-gradient(135deg, rgba(45, 90, 74, 0.05), rgba(61, 122, 106, 0.08));
+      border-radius: var(--radius-lg);
+      margin-bottom: 16px;
     }
 
     .study-hours {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--accent-study);
+      font-family: "Roboto Mono", monospace;
+      font-size: 64px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
     }
 
     .study-unit {
-      font-size: 1rem;
+      font-size: 20px;
       color: var(--text-secondary);
+      margin-top: 8px;
     }
 
-    .study-slider-container {
+    .study-slider-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
       margin-top: 16px;
     }
 
     .study-slider {
-      width: 100%;
+      flex: 1;
       height: 8px;
       -webkit-appearance: none;
-      background: var(--bg-secondary);
+      background: var(--bg-hover);
       border-radius: 4px;
       outline: none;
     }
@@ -495,1229 +894,1078 @@
       -webkit-appearance: none;
       width: 24px;
       height: 24px;
-      background: var(--accent-study);
+      background: var(--primary);
       border-radius: 50%;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(123, 104, 238, 0.4);
+      box-shadow: var(--shadow-sm);
     }
 
-    .study-slider-labels {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 8px;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    /* ==================== Month Selector ==================== */
-    .month-nav {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .month-nav button {
-      background: var(--bg-card);
-      border: 1px solid var(--border-light);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-
-    .month-nav button:hover {
-      background: var(--accent-primary);
-      border-color: var(--accent-primary);
-      color: white;
-    }
-
-    .current-month {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.25rem;
+    .study-slider-value {
+      font-family: "Roboto Mono", monospace;
+      font-size: 18px;
       font-weight: 600;
-      min-width: 120px;
+      color: var(--primary);
+      min-width: 60px;
       text-align: center;
     }
 
-    /* ==================== Progress Cards ==================== */
-    .progress-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .progress-card {
-      background: var(--bg-card);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .progress-card-title {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
-    }
-
-    .progress-card-values {
-      display: flex;
-      align-items: baseline;
-      gap: 4px;
-      margin-bottom: 12px;
-    }
-
-    .progress-card-current {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-
-    .progress-card-total {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-
-    .progress-bar {
-      height: 8px;
-      background: var(--bg-secondary);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      border-radius: 4px;
-      transition: width 0.5s ease;
-    }
-
-    .progress-bar-fill.budget {
-      background: linear-gradient(90deg, var(--accent-primary), var(--accent-income));
-    }
-
-    .progress-bar-fill.budget.warning {
-      background: linear-gradient(90deg, var(--accent-secondary), var(--accent-expense));
-    }
-
-    .progress-bar-fill.savings {
-      background: linear-gradient(90deg, var(--accent-study), var(--accent-income));
-    }
-
-    .progress-status {
-      font-size: 0.75rem;
-      margin-top: 8px;
-      color: var(--text-muted);
-    }
-
-    .progress-status.warning {
-      color: var(--accent-expense);
-    }
-
-    .progress-card-edit {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      opacity: 0;
-      transition: opacity 0.2s;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 0.9rem;
-      padding: 4px;
-    }
-
-    .progress-card:hover .progress-card-edit {
-      opacity: 0.6;
-    }
-
-    .progress-card-edit:hover {
-      opacity: 1 !important;
-    }
-
-    .progress-card {
-      position: relative;
-    }
-
-    .table-action-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px 8px;
-      border-radius: 4px;
-      transition: background 0.2s;
-      font-size: 0.8rem;
-    }
-
-    .table-action-btn:hover {
-      background: var(--bg-secondary);
-    }
-
-    .table-action-btn.edit {
-      color: var(--accent-primary);
-    }
-
-    .table-action-btn.delete {
-      color: var(--accent-expense);
-    }
-
-    .table-action-btn.save {
-      color: var(--accent-income);
-    }
-
-    .inline-edit-input {
-      padding: 4px 8px;
-      border: 1px solid var(--accent-primary);
-      border-radius: 4px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
-      width: 80px;
-    }
-
-    .inline-edit-input.amount {
-      width: 100px;
-    }
-
-    .inline-edit-select {
-      padding: 4px 8px;
-      border: 1px solid var(--accent-primary);
-      border-radius: 4px;
-      font-family: 'Noto Sans SC', sans-serif;
-      font-size: 0.85rem;
-    }
-
-    /* ==================== Stats Grid ==================== */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .stat-item {
-      text-align: center;
-      padding: 16px;
-      background: var(--bg-card);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .stat-label {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .stat-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-
-    /* ==================== Charts ==================== */
+    /* Chart Container */
     .chart-container {
-      background: var(--bg-card);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .chart-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
-
-    .chart-wrapper {
-      position: relative;
       height: 250px;
+      margin-top: 16px;
     }
 
-    /* ==================== Table ==================== */
-    .table-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* Reflection */
+    .reflection-textarea {
+      width: 100%;
+      min-height: 120px;
       padding: 16px;
-      background: var(--bg-card);
-      border-radius: var(--radius-lg);
-      cursor: pointer;
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 8px;
+      border: 2px solid var(--bg-hover);
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-family: inherit;
+      resize: vertical;
+      line-height: 1.8;
     }
 
-    .table-toggle-arrow {
-      transition: transform 0.3s ease;
-    }
-
-    .table-toggle-arrow.expanded {
-      transform: rotate(180deg);
-    }
-
-    .table-container {
-      background: var(--bg-card);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      display: none;
-      margin-bottom: 16px;
-    }
-
-    .table-container.expanded {
-      display: block;
-    }
-
-    .table-filter {
-      display: flex;
-      gap: 8px;
-      padding: 12px 16px;
-      background: var(--bg-secondary);
-    }
-
-    .filter-btn {
-      padding: 6px 12px;
-      border: none;
-      background: transparent;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-size: 0.8rem;
-      transition: all 0.2s;
-    }
-
-    .filter-btn.active {
-      background: var(--accent-primary);
-      color: white;
-    }
-
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .data-table th,
-    .data-table td {
-      padding: 12px 16px;
-      text-align: left;
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .data-table th {
-      background: var(--bg-secondary);
-      font-weight: 500;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
-
-    .data-table td {
-      font-size: 0.9rem;
-    }
-
-    .data-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .type-badge {
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
-
-    .type-badge.income {
-      background: rgba(45, 147, 108, 0.15);
-      color: var(--accent-income);
-    }
-
-    .type-badge.expense {
-      background: rgba(224, 122, 95, 0.15);
-      color: var(--accent-expense);
-    }
-
-    /* ==================== Modal / Form ==================== */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 20px;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    .modal {
-      background: var(--bg-card);
-      border-radius: var(--radius-xl);
-      padding: 28px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-      animation: modalIn 0.3s ease;
-    }
-
-    @keyframes modalIn {
-      from {
-        opacity: 0;
-        transform: scale(0.9) translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
-    }
-
-    .modal-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 24px;
-      text-align: center;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
-    }
-
-    .type-selector {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .type-btn {
-      padding: 12px;
-      border: 2px solid var(--border-light);
-      background: transparent;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-
-    .type-btn.active.income {
-      border-color: var(--accent-income);
-      background: rgba(45, 147, 108, 0.1);
-      color: var(--accent-income);
-    }
-
-    .type-btn.active.expense {
-      border-color: var(--accent-expense);
-      background: rgba(224, 122, 95, 0.1);
-      color: var(--accent-expense);
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-sm);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1rem;
-      transition: border-color 0.2s;
-    }
-
-    .form-input:focus {
+    .reflection-textarea:focus {
       outline: none;
-      border-color: var(--accent-primary);
+      border-color: var(--primary);
     }
 
-    .form-input.with-prefix {
-      padding-left: 36px;
-    }
-
-    .input-wrapper {
-      position: relative;
-    }
-
-    .input-prefix {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .form-select {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-sm);
-      font-family: 'Noto Sans SC', sans-serif;
-      font-size: 0.9rem;
-      background: white;
-      cursor: pointer;
-    }
-
-    .form-select:focus {
-      outline: none;
-      border-color: var(--accent-primary);
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 28px;
-    }
-
-    .modal-actions .btn {
-      flex: 1;
-      justify-content: center;
-      padding: 14px;
-    }
-
-    /* ==================== Bottom Navigation ==================== */
+    /* Bottom Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       background: var(--bg-card);
-      border-top: 1px solid var(--border-light);
+      border-top: 1px solid rgba(0,0,0,0.06);
       display: flex;
-      justify-content: center;
+      padding: 8px 24px;
+      padding-bottom: calc(8px + env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
       z-index: 100;
     }
 
-    .nav-inner {
-      display: flex;
-      max-width: 600px;
-      width: 100%;
-      justify-content: center;
-    }
-
     .nav-item {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 12px 32px;
+      padding: 8px 16px;
       cursor: pointer;
-      transition: all 0.2s;
-      border: none;
-      background: transparent;
       color: var(--text-muted);
-      position: relative;
-    }
-
-    .nav-item:first-child {
-      margin-right: auto;
-    }
-
-    .nav-item:last-child {
-      margin-left: auto;
+      transition: all 0.2s;
+      border-radius: var(--radius-md);
+      background: transparent;
+      border: none;
+      font-family: inherit;
     }
 
     .nav-item:hover {
-      color: var(--accent-primary);
+      background: var(--bg-hover);
     }
 
     .nav-item.active {
-      color: var(--accent-primary);
+      color: var(--primary);
     }
 
-    .nav-item.active::after {
-      content: '';
+    .nav-item.active::before {
+      content: "";
       position: absolute;
-      bottom: 0;
+      top: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 40px;
       height: 3px;
-      background: var(--accent-primary);
-      border-radius: 3px 3px 0 0;
+      background: var(--primary);
+      border-radius: 0 0 3px 3px;
     }
 
     .nav-icon {
-      font-size: 1.5rem;
+      width: 24px;
+      height: 24px;
       margin-bottom: 4px;
     }
 
     .nav-label {
-      font-size: 0.7rem;
+      font-size: 12px;
       font-weight: 500;
     }
 
-    /* ==================== Settings Page ==================== */
-    .settings-section {
-      background: var(--bg-card);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow-soft);
+    /* Settings */
+    .settings-group {
+      margin-bottom: 32px;
     }
 
-    .settings-section-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1rem;
+    .settings-title {
+      font-family: "Noto Serif SC", serif;
+      font-size: 16px;
       font-weight: 600;
-      margin-bottom: 16px;
       color: var(--text-primary);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--bg-hover);
     }
 
     .settings-row {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       padding: 12px 0;
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .settings-row:last-child {
-      border-bottom: none;
     }
 
     .settings-label {
-      font-size: 0.9rem;
+      font-size: 15px;
+      color: var(--text-secondary);
     }
 
     .settings-input {
-      width: 150px;
-      padding: 8px 12px;
-      border: 1px solid var(--border-light);
+      width: 140px;
+      padding: 10px 12px;
+      border: 1px solid var(--bg-hover);
       border-radius: var(--radius-sm);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: "Roboto Mono", monospace;
+      font-size: 14px;
       text-align: right;
     }
 
-    .settings-input:focus {
-      outline: none;
-      border-color: var(--accent-primary);
+    .settings-select {
+      padding: 10px 12px;
+      border: 1px solid var(--bg-hover);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      background: var(--bg-card);
     }
 
-    .month-selector {
+    .settings-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .settings-btn {
+      padding: 14px 20px;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .settings-btn.export {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .settings-btn.import {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .settings-btn.danger {
+      background: rgba(199, 81, 70, 0.1);
+      color: var(--accent);
+    }
+
+    .settings-btn.demo {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+    }
+
+    .settings-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .about-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    /* Detail Table */
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .detail-table th,
+    .detail-table td {
+      padding: 12px 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--bg-hover);
+      font-size: 14px;
+    }
+
+    .detail-table th {
+      font-weight: 500;
+      color: var(--text-muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .detail-table tr:hover td {
+      background: var(--bg-hover);
+    }
+
+    .filter-group {
       display: flex;
       gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .month-selector select {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-sm);
-      font-family: 'Noto Sans SC', sans-serif;
-      background: white;
-    }
-
-    .danger-zone {
-      border: 1px solid var(--accent-expense);
-      background: rgba(224, 122, 95, 0.05);
-    }
-
-    .danger-zone .settings-section-title {
-      color: var(--accent-expense);
-    }
-
-    /* ==================== Empty State ==================== */
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-muted);
-    }
-
-    .empty-icon {
-      font-size: 3rem;
       margin-bottom: 12px;
-      opacity: 0.5;
+      flex-wrap: wrap;
     }
 
-    .empty-text {
-      font-size: 0.9rem;
+    .filter-btn {
+      padding: 6px 14px;
+      border: 1px solid var(--bg-hover);
+      background: var(--bg-card);
+      border-radius: 16px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
     }
 
-    /* ==================== Toast ==================== */
-    .toast {
-      position: fixed;
-      top: 80px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-20px);
-      background: var(--text-primary);
+    .filter-btn.active {
+      background: var(--primary);
       color: white;
-      padding: 12px 24px;
+      border-color: var(--primary);
+    }
+
+    .collapse-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: var(--bg-hover);
+      border: none;
       border-radius: var(--radius-md);
-      font-size: 0.9rem;
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 2000;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text-secondary);
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      transition: all 0.2s;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+    .collapse-btn:hover {
+      background: var(--bg-active);
     }
 
-    .toast.success {
-      background: var(--accent-income);
+    .collapse-btn svg {
+      transition: transform 0.2s;
     }
 
-    .toast.error {
-      background: var(--accent-expense);
+    .collapse-btn.collapsed svg {
+      transform: rotate(-90deg);
     }
 
-    /* ==================== Responsive ==================== */
+    .detail-section {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-top: 12px;
+    }
+
+    .detail-section.collapsed {
+      display: none;
+    }
+
+    /* Month Selector */
+    .month-selector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .month-display {
+      font-family: "Noto Serif SC", serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      min-width: 140px;
+      text-align: center;
+    }
+
+    /* Statistics Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+
+    .stat-card.full {
+      grid-column: 1 / -1;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-family: "Roboto Mono", monospace;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .stat-value.income { color: var(--income); }
+    .stat-value.expense { color: var(--expense); }
+
+    /* Responsive */
     @media (max-width: 768px) {
-      .header {
-        padding: 12px 16px;
+      .header-content {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .summary-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
       }
 
       .main-content {
         padding: 16px;
-        padding-bottom: 90px;
+        padding-bottom: 120px;
       }
 
-      .summary-bar {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
+      .record-delete {
+        opacity: 1;
       }
 
-      .summary-value {
-        font-size: 0.95rem;
+      .todo-delete {
+        opacity: 1;
       }
 
-      .progress-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-      }
-
-      .stat-item {
-        padding: 12px 8px;
-      }
-
-      .stat-value {
-        font-size: 0.9rem;
-      }
-
-      .chart-wrapper {
-        height: 200px;
-      }
-
-      .modal {
-        padding: 24px 20px;
-        margin: 0;
-        border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-        max-height: 90vh;
-        overflow-y: auto;
+      .tag-note-delete {
+        opacity: 1;
       }
     }
 
-    @media (max-width: 480px) {
-      .summary-bar {
-        grid-template-columns: 1fr;
+    @media (min-width: 1024px) {
+      .main-content {
+        padding: 32px;
       }
 
-      .stats-grid {
-        grid-template-columns: 1fr;
+      .panel {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+    }
+
+    /* Month picker dropdown */
+    .month-picker-container {
+      position: relative;
+    }
+
+    .month-picker-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      padding: 16px;
+      z-index: 200;
+      min-width: 200px;
+      display: none;
+    }
+
+    .month-picker-dropdown.active {
+      display: block;
+    }
+
+    .month-picker-year {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .month-picker-year-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: var(--bg-hover);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .month-picker-year-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .month-picker-months {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .month-picker-month {
+      padding: 8px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .month-picker-month:hover {
+      background: var(--bg-hover);
+    }
+
+    .month-picker-month.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-active);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Selection */
+    ::selection {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Smooth scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Focus visible */
+    :focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* Table responsive */
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    @media (max-width: 600px) {
+      .detail-table {
+        font-size: 13px;
+      }
+
+      .detail-table th,
+      .detail-table td {
+        padding: 10px 6px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="app">
+  <div class="app-container">
     <!-- Header -->
     <header class="header">
-      <h1 class="header-title">量化你的生活</h1>
-      <nav class="date-nav" id="dateNav">
-        <button id="prevDay" aria-label="前一天">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M15 18l-6-6 6-6"/>
-          </svg>
-        </button>
-        <span class="current-date" id="currentDate"></span>
-        <button id="nextDay" aria-label="后一天">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
-        </button>
-      </nav>
+      <div class="header-content">
+        <div class="logo">
+          <div class="logo-icon">📔</div>
+          <span>日知录</span>
+        </div>
+        <div class="header-date" id="headerDate"></div>
+      </div>
     </header>
 
     <!-- Main Content -->
     <main class="main-content">
-      <!-- 每日面板 -->
-      <section class="page active" id="dailyPage">
-        <!-- 日汇总 -->
-        <div class="summary-bar" id="dailySummary">
-          <div class="summary-item income">
-            <div class="summary-label">收入</div>
-            <div class="summary-value" id="dailyIncome">¥0</div>
-          </div>
-          <div class="summary-item expense">
-            <div class="summary-label">支出</div>
-            <div class="summary-value" id="dailyExpense">¥0</div>
-          </div>
-          <div class="summary-item balance">
-            <div class="summary-label">结余</div>
-            <div class="summary-value" id="dailyBalance">¥0</div>
-          </div>
-        </div>
-
-        <!-- 收支记录 -->
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">
-              <span>💰</span>
-              <span>收支记录</span>
-            </h2>
-            <button class="btn btn-primary btn-sm" id="addExpenseBtn">添加</button>
-          </div>
-          <div class="record-list" id="expenseList">
-            <div class="empty-state">
-              <div class="empty-icon">📝</div>
-              <p class="empty-text">今天还没有收支记录</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- 待办事项 -->
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">
-              <span>✓</span>
-              <span>待办事项</span>
-            </h2>
-          </div>
-          <div id="todoList"></div>
-          <div class="todo-input-group">
-            <input type="text" class="todo-input" id="todoInput" placeholder="添加新待办...">
-            <button class="btn btn-primary btn-sm" id="addTodoBtn">添加</button>
-          </div>
-        </div>
-
-        <!-- 学习时长 -->
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">
-              <span>📚</span>
-              <span>学习时长</span>
-            </h2>
-          </div>
-          <div class="study-display">
-            <span class="study-hours" id="studyHours">0</span>
-            <span class="study-unit">小时</span>
-          </div>
-          <div class="study-slider-container">
-            <input type="range" class="study-slider" id="studySlider" min="0" max="24" step="0.5" value="0">
-            <div class="study-slider-labels">
-              <span>0h</span>
-              <span>6h</span>
-              <span>12h</span>
-              <span>18h</span>
-              <span>24h</span>
-            </div>
-          </div>
-          <button class="btn btn-primary" id="saveStudyBtn" style="width: 100%; margin-top: 16px;">保存学习时长</button>
-        </div>
-      </section>
-
-      <!-- 月度报表 -->
-      <section class="page" id="monthlyPage">
-        <!-- 月份选择 -->
-        <div class="month-nav">
-          <button id="prevMonth" aria-label="上一月">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+      <!-- 消费复盘面板 -->
+      <div class="panel active" id="panelExpenses">
+        <div class="date-selector">
+          <button class="date-nav-btn" id="prevDay">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M15 18l-6-6 6-6"/>
             </svg>
           </button>
-          <span class="current-month" id="currentMonth"></span>
-          <button id="nextMonth" aria-label="下一月">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+          <div class="current-date">
+            <div class="current-date-main" id="currentDateMain">2024年1月1日</div>
+            <div class="current-date-weekday" id="currentDateWeekday">星期一</div>
+          </div>
+          <button class="date-nav-btn" id="nextDay">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M9 18l6-6-6-6"/>
             </svg>
           </button>
         </div>
 
-        <!-- 进度卡片 -->
-        <div class="progress-grid" id="progressCards">
-          <!-- 由JS动态生成 -->
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <div class="summary-card income">
+            <div class="summary-label">收入</div>
+            <div class="summary-value" id="dayIncome">¥0.00</div>
+          </div>
+          <div class="summary-card expense">
+            <div class="summary-label">支出</div>
+            <div class="summary-value" id="dayExpense">¥0.00</div>
+          </div>
+          <div class="summary-card balance">
+            <div class="summary-label">结余</div>
+            <div class="summary-value" id="dayBalance">¥0.00</div>
+          </div>
+        </div>
+
+        <!-- 收支记录 -->
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+              收支记录
+            </h2>
+            <button class="add-btn" id="addExpenseBtn">+</button>
+          </div>
+          <div id="expenseList"></div>
+        </div>
+
+        <!-- 收支明细表 -->
+        <div class="section">
+          <button class="collapse-btn" id="toggleDetail">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+            <span>本月收支明细表</span>
+          </button>
+          <div class="detail-section" id="detailSection">
+            <div class="filter-group" id="filterGroup">
+              <button class="filter-btn active" data-filter="all">全部</button>
+              <button class="filter-btn" data-filter="income">收入</button>
+              <button class="filter-btn" data-filter="expense">支出</button>
+            </div>
+            <div class="table-wrapper">
+              <table class="detail-table">
+                <thead>
+                  <tr>
+                    <th>日期</th>
+                    <th>类型</th>
+                    <th>分类</th>
+                    <th>金额</th>
+                    <th>备注</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="detailTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 预算与攒钱进度 -->
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 5L5 19M9 7h6v6"/>
+              </svg>
+              本月进度
+            </h2>
+          </div>
+          <div class="progress-section">
+            <div class="progress-item">
+              <div class="progress-header">
+                <span class="progress-label">支出预算</span>
+                <span class="progress-value" id="budgetProgressText">¥0 / ¥5000</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill low" id="budgetProgressBar" style="width: 0%"></div>
+              </div>
+              <div class="budget-input-group">
+                <input type="number" class="budget-input" id="budgetInput" placeholder="设置预算">
+                <button class="budget-save-btn" id="saveBudgetBtn">保存</button>
+              </div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-header">
+                <span class="progress-label">攒钱目标</span>
+                <span class="progress-value" id="savingsProgressText">¥0 / ¥2000</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill low" id="savingsProgressBar" style="width: 0%"></div>
+              </div>
+              <div class="budget-input-group">
+                <input type="number" class="budget-input" id="savingsInput" placeholder="设置目标">
+                <button class="budget-save-btn" id="saveSavingsBtn">保存</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 💰记录 -->
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+              💰记录
+            </h2>
+          </div>
+          <div id="tagNotes"></div>
+          <div class="form-group" style="margin-top: 16px;">
+            <textarea class="form-textarea" id="tagNoteInput" placeholder="写下今天的薅羊毛心得、投资摘录或省钱tips..."></textarea>
+            <div class="tag-selector" id="tagSelector">
+              <button class="tag-option 羊毛" data-tag="羊毛">🏷️ 薅羊毛</button>
+              <button class="tag-option 投资" data-tag="投资">🏷️ 投资摘录</button>
+              <button class="tag-option 省钱" data-tag="省钱">🏷️ 省钱tips</button>
+            </div>
+            <button class="btn btn-primary" style="margin-top: 12px; width: 100%;" id="saveTagNoteBtn">保存记录</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 学习日记面板 -->
+      <div class="panel" id="panelStudy">
+        <div class="month-selector">
+          <button class="date-nav-btn" id="prevMonth">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <div class="month-picker-container">
+            <div class="month-display" id="monthDisplay">2024年1月</div>
+            <div class="month-picker-dropdown" id="monthPickerDropdown">
+              <div class="month-picker-year">
+                <button class="month-picker-year-btn" id="pickerPrevYear">◀</button>
+                <span id="pickerYear">2024</span>
+                <button class="month-picker-year-btn" id="pickerNextYear">▶</button>
+              </div>
+              <div class="month-picker-months" id="pickerMonths"></div>
+            </div>
+          </div>
+          <button class="date-nav-btn" id="nextMonth">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
         </div>
 
         <!-- 月度统计 -->
-        <div class="stats-grid" id="monthlyStats">
-          <div class="stat-item">
+        <div class="stats-grid">
+          <div class="stat-card">
             <div class="stat-label">总收入</div>
-            <div class="stat-value" id="monthIncome" style="color: var(--accent-income)">¥0</div>
+            <div class="stat-value income" id="monthIncome">¥0</div>
           </div>
-          <div class="stat-item">
+          <div class="stat-card">
             <div class="stat-label">总支出</div>
-            <div class="stat-value" id="monthExpense" style="color: var(--accent-expense)">¥0</div>
+            <div class="stat-value expense" id="monthExpense">¥0</div>
           </div>
-          <div class="stat-item" style="position: relative; cursor: pointer;" onclick="openStudyEditModal()">
-            <div class="stat-label">学习时长 <span style="font-size: 0.7rem;">✏️</span></div>
-            <div class="stat-value" id="monthStudy" style="color: var(--accent-study)">0h / 0h</div>
-            <div class="progress-bar" style="height: 4px; margin-top: 8px;">
-              <div class="progress-bar-fill" id="monthStudyProgress" style="width: 0%; background: var(--accent-study);"></div>
+          <div class="stat-card">
+            <div class="stat-label">结余</div>
+            <div class="stat-value" id="monthBalance">¥0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">学习时长</div>
+            <div class="stat-value" id="monthStudyHours">0h</div>
+          </div>
+        </div>
+
+        <!-- 待办事项 -->
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+              待办事项
+            </h2>
+          </div>
+          <div id="todoList"></div>
+          <div class="todo-input-group">
+            <input type="text" class="todo-input" id="todoInput" placeholder="添加新待办...">
+            <button class="todo-add-btn" id="addTodoBtn">添加</button>
+          </div>
+        </div>
+
+        <!-- 学习时长 -->
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              今日学习
+            </h2>
+          </div>
+          <div class="study-display">
+            <div class="study-hours" id="todayStudyHours">0</div>
+            <div class="study-unit">小时</div>
+            <div class="study-slider-group">
+              <input type="range" class="study-slider" id="studySlider" min="0" max="24" step="0.5" value="0">
+              <span class="study-slider-value" id="studySliderValue">0h</span>
             </div>
           </div>
         </div>
 
-        <!-- 编辑学习时长 Modal -->
-        <div class="modal-overlay" id="editStudyModal">
-          <div class="modal">
-            <h3 class="modal-title">编辑月度学习目标</h3>
-            <div class="form-group">
-              <label class="form-label">月度学习目标时长（小时）</label>
-              <div class="input-wrapper">
-                <input type="number" class="form-input" id="editStudyHours" placeholder="40" min="0" step="0.5">
-              </div>
-            </div>
-            <div class="modal-actions">
-              <button class="btn btn-secondary" id="cancelEditStudyBtn">取消</button>
-              <button class="btn btn-primary" id="confirmEditStudyBtn">保存</button>
-            </div>
+        <!-- 学习柱状图 -->
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 20V10M12 20V4M6 20v-6"/>
+              </svg>
+              学习趋势
+            </h2>
           </div>
-        </div>
-
-        <!-- 支出分类图 -->
-        <div class="chart-container">
-          <h3 class="chart-title">支出分类</h3>
-          <div class="chart-wrapper">
-            <canvas id="categoryChart"></canvas>
-          </div>
-        </div>
-
-        <!-- 收支趋势图 -->
-        <div class="chart-container">
-          <h3 class="chart-title">每日收支趋势</h3>
-          <div class="chart-wrapper">
-            <canvas id="trendChart"></canvas>
-          </div>
-        </div>
-
-        <!-- 学习时长图 -->
-        <div class="chart-container">
-          <h3 class="chart-title">每日学习时长</h3>
-          <div class="chart-wrapper">
+          <div class="chart-container">
             <canvas id="studyChart"></canvas>
           </div>
         </div>
 
-        <!-- 收支明细表 -->
-        <div class="table-toggle" id="tableToggle">
-          <span class="card-title">📋 收支明细表</span>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <button class="btn btn-primary btn-sm" id="addMonthlyExpenseBtn">+ 添加</button>
-            <span class="table-toggle-arrow" id="tableArrow">▼</span>
+        <!-- 反思日记 -->
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              反思日记
+            </h2>
           </div>
+          <textarea class="reflection-textarea" id="reflectionText" placeholder="写下今天的收获、反思或计划..."></textarea>
+          <button class="btn btn-primary" style="margin-top: 12px; width: 100%;" id="saveReflectionBtn">保存反思</button>
         </div>
-        <div class="table-container expanded" id="tableContainer">
-          <div class="table-filter">
-            <button class="filter-btn active" data-filter="all">全部</button>
-            <button class="filter-btn" data-filter="income">收入</button>
-            <button class="filter-btn" data-filter="expense">支出</button>
-          </div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>日期</th>
-                <th>类型</th>
-                <th>金额</th>
-                <th>分类</th>
-                <th>备注</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody id="expenseTableBody"></tbody>
-          </table>
-        </div>
-      </section>
+      </div>
 
-      <!-- 设置页面 -->
-      <section class="page" id="settingsPage">
-        <div class="settings-section">
-          <h3 class="settings-section-title">⚙️ 预算与目标设置</h3>
-          <div class="month-selector">
-            <select id="settingsYear"></select>
-            <select id="settingsMonth"></select>
+      <!-- 设置面板 -->
+      <div class="panel" id="panelSettings">
+        <div class="section">
+          <div class="settings-group">
+            <h3 class="settings-title">预算与目标设置</h3>
+            <div class="settings-row">
+              <span class="settings-label">年份</span>
+              <select class="settings-select" id="settingsYear"></select>
+            </div>
+            <div class="settings-row">
+              <span class="settings-label">月份</span>
+              <select class="settings-select" id="settingsMonth">
+                <option value="1">1月</option>
+                <option value="2">2月</option>
+                <option value="3">3月</option>
+                <option value="4">4月</option>
+                <option value="5">5月</option>
+                <option value="6">6月</option>
+                <option value="7">7月</option>
+                <option value="8">8月</option>
+                <option value="9">9月</option>
+                <option value="10">10月</option>
+                <option value="11">11月</option>
+                <option value="12">12月</option>
+              </select>
+            </div>
+            <div class="settings-row">
+              <span class="settings-label">预算金额</span>
+              <input type="number" class="settings-input" id="settingsBudget" placeholder="5000">
+            </div>
+            <div class="settings-row">
+              <span class="settings-label">攒钱目标</span>
+              <input type="number" class="settings-input" id="settingsSavings" placeholder="2000">
+            </div>
+            <button class="btn btn-primary" style="margin-top: 16px; width: 100%;" id="settingsSaveBtn">保存设置</button>
           </div>
-          <div class="settings-row">
-            <span class="settings-label">月度预算（元）</span>
-            <input type="number" class="settings-input" id="budgetInput" placeholder="5000" min="0">
-          </div>
-          <div class="settings-row">
-            <span class="settings-label">攒钱目标（元）</span>
-            <input type="number" class="settings-input" id="savingsInput" placeholder="2000" min="0">
-          </div>
-          <button class="btn btn-primary" id="saveSettingsBtn" style="width: 100%; margin-top: 16px;">保存设置</button>
-        </div>
 
-        <div class="settings-section">
-          <h3 class="settings-section-title">📤 数据管理</h3>
-          <div class="settings-row">
-            <span class="settings-label">导出所有数据</span>
-            <button class="btn btn-secondary btn-sm" id="exportBtn">导出JSON</button>
+          <div class="settings-group">
+            <h3 class="settings-title">数据管理</h3>
+            <div class="settings-actions">
+              <button class="settings-btn export" id="exportBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                导出所有数据
+              </button>
+              <button class="settings-btn import">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                导入数据
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+              </button>
+              <button class="settings-btn danger" id="clearDataBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+                清除所有数据
+              </button>
+              <button class="settings-btn demo" id="loadDemoBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+                加载示例数据
+              </button>
+            </div>
           </div>
-          <div class="settings-row">
-            <span class="settings-label">加载示例数据</span>
-            <button class="btn btn-secondary btn-sm" id="loadSampleBtn">加载</button>
-          </div>
-          <div class="settings-row">
-            <span class="settings-label">清除所有数据</span>
-            <button class="btn btn-danger btn-sm" id="clearDataBtn">清除</button>
-          </div>
-        </div>
 
-        <div class="settings-section">
-          <h3 class="settings-section-title">ℹ️ 关于</h3>
-          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8;">
-            「量化你的生活」是一款纯前端的个人管理工具。<br>
-            所有数据均存储在浏览器本地（LocalStorage），<br>
-            不会上传到任何服务器。<br><br>
-            祝你记录愉快！
-          </p>
+          <div class="settings-group">
+            <h3 class="settings-title">关于</h3>
+            <p class="about-text">
+              日知录是一款纯前端个人管理工具，所有数据均存储在您浏览器的本地存储中（LocalStorage），不会上传至任何服务器。<br><br>
+              功能包括：每日收支记录、待办事项管理、学习时长追踪、月度预算与攒钱目标跟踪。
+            </p>
+          </div>
         </div>
-      </section>
+      </div>
     </main>
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-      <div class="nav-inner">
-        <button class="nav-item" data-page="monthly">
-          <span class="nav-icon">📊</span>
-          <span class="nav-label">报表</span>
-        </button>
-        <button class="nav-item active" data-page="daily">
-          <span class="nav-icon">📅</span>
-          <span class="nav-label">每日</span>
-        </button>
-        <button class="nav-item" data-page="settings">
-          <span class="nav-icon">⚙️</span>
-          <span class="nav-label">设置</span>
-        </button>
-      </div>
+      <button class="nav-item active" data-panel="panelExpenses">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+        <span class="nav-label">消费复盘</span>
+      </button>
+      <button class="nav-item" data-panel="panelStudy">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+        <span class="nav-label">学习日记</span>
+      </button>
+      <button class="nav-item" data-panel="panelSettings">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        <span class="nav-label">设置</span>
+      </button>
     </nav>
+  </div>
 
-    <!-- 添加收支 Modal -->
-    <div class="modal-overlay" id="expenseModal">
-      <div class="modal">
-        <h3 class="modal-title">添加收支记录</h3>
+  <!-- 添加收支弹窗 -->
+  <div class="modal-overlay" id="expenseModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="expenseModalTitle">添加收支记录</h3>
+        <button class="modal-close" id="closeExpenseModal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
         <div class="form-group">
           <label class="form-label">类型</label>
-          <div class="type-selector">
-            <button class="type-btn income active" data-type="income">💰 收入</button>
-            <button class="type-btn expense" data-type="expense">💸 支出</button>
+          <div class="type-switch">
+            <button class="type-btn income active" data-type="income">收入</button>
+            <button class="type-btn expense" data-type="expense">支出</button>
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">金额</label>
-          <div class="input-wrapper">
-            <span class="input-prefix">¥</span>
-            <input type="number" class="form-input with-prefix" id="expenseAmount" placeholder="0.00" min="0" step="0.01">
-          </div>
+          <input type="number" class="form-input amount-input" id="amountInput" placeholder="0.00" step="0.01" min="0">
         </div>
         <div class="form-group">
           <label class="form-label">分类</label>
-          <select class="form-select" id="expenseCategory">
-            <!-- 动态生成 -->
-          </select>
+          <select class="form-select" id="categorySelect"></select>
         </div>
         <div class="form-group">
           <label class="form-label">备注（可选）</label>
-          <input type="text" class="form-input" id="expenseNote" placeholder="添加备注...">
+          <textarea class="form-textarea" id="noteInput" placeholder="添加备注..."></textarea>
         </div>
-        <div class="modal-actions">
+        <div class="form-actions">
           <button class="btn btn-secondary" id="cancelExpenseBtn">取消</button>
-          <button class="btn btn-primary" id="confirmExpenseBtn">保存</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Toast -->
-    <div class="toast" id="toast"></div>
-
-    <!-- 编辑收支 Modal -->
-    <div class="modal-overlay" id="editExpenseModal">
-      <div class="modal">
-        <h3 class="modal-title" id="editExpenseTitle">编辑收支记录</h3>
-        <div class="form-group">
-          <label class="form-label">类型</label>
-          <div class="type-selector">
-            <button class="type-btn income active" data-edit-type="income">💰 收入</button>
-            <button class="type-btn expense" data-edit-type="expense">💸 支出</button>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">金额</label>
-          <div class="input-wrapper">
-            <span class="input-prefix">¥</span>
-            <input type="number" class="form-input with-prefix" id="editExpenseAmount" placeholder="0.00" min="0" step="0.01">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">分类</label>
-          <select class="form-select" id="editExpenseCategory"></select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">备注（可选）</label>
-          <input type="text" class="form-input" id="editExpenseNote" placeholder="添加备注...">
-        </div>
-        <div class="modal-actions">
-          <button class="btn btn-danger" id="deleteExpenseBtn" style="flex: 0.5;">删除</button>
-          <button class="btn btn-secondary" id="cancelEditExpenseBtn">取消</button>
-          <button class="btn btn-primary" id="confirmEditExpenseBtn">保存</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 编辑预算目标 Modal -->
-    <div class="modal-overlay" id="editGoalModal">
-      <div class="modal">
-        <h3 class="modal-title" id="editGoalTitle">编辑预算目标</h3>
-        <div class="form-group">
-          <label class="form-label">月度预算（元）</label>
-          <div class="input-wrapper">
-            <span class="input-prefix">¥</span>
-            <input type="number" class="form-input with-prefix" id="editBudgetAmount" placeholder="5000" min="0">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">攒钱目标（元）</label>
-          <div class="input-wrapper">
-            <span class="input-prefix">¥</span>
-            <input type="number" class="form-input with-prefix" id="editSavingsAmount" placeholder="2000" min="0">
-          </div>
-        </div>
-        <div class="modal-actions">
-          <button class="btn btn-secondary" id="cancelEditGoalBtn">取消</button>
-          <button class="btn btn-primary" id="confirmEditGoalBtn">保存</button>
+          <button class="btn btn-primary" id="saveExpenseBtn">保存</button>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    // ==================== Constants ====================
-    const STORAGE_KEYS = {
-      expenses: 'ql_expenses',
-      todos: 'ql_todos',
-      study: 'ql_study',
-      budgetGoals: 'ql_budget_goals'
-    };
-
-    const CATEGORIES = {
-      income: ['工资', '奖金', '投资', '兼职', '其他收入'],
-      expense: ['餐饮', '购物', '交通', '居住', '娱乐', '医疗', '教育', '其他支出']
-    };
-
-    const DEFAULT_BUDGET = 5000;
-    const DEFAULT_SAVINGS = 2000;
-
     // ==================== Storage Service ====================
-    const storageService = {
+    const STORAGE_KEYS = {
+      expenses: 'app_expenses',
+      todos: 'app_todos',
+      study: 'app_study',
+      budget_goals: 'app_budget_goals',
+      notes: 'app_notes',
+      reflections: 'app_reflections'
+    };
+
+    const DEFAULTS = {
+      budget: 5000,
+      savings_target: 2000
+    };
+
+    const INCOME_CATEGORIES = ['生活费', '工资', '投资', '副业', '薅羊毛'];
+    const EXPENSE_CATEGORIES = ['饮食', '旅游', '投资亏损', '学习提升', '服饰', '生活用品', '电子产品', '美容', '护肤品化妆品', '人情'];
+
+    const CATEGORY_ICONS = {
+      '生活费': '💰', '工资': '💵', '投资': '📈', '副业': '💼', '薅羊毛': '🎁',
+      '饮食': '🍜', '旅游': '✈️', '投资亏损': '📉', '学习提升': '📚',
+      '服饰': '👕', '生活用品': '🛒', '电子产品': '📱', '美容': '💄',
+      '护肤品化妆品': '✨', '人情': '🎂'
+    };
+
+    const StorageService = {
       get(key) {
         try {
-          const data = localStorage.getItem(key);
-          return data ? JSON.parse(data) : null;
+          const data = localStorage.getItem(STORAGE_KEYS[key]);
+          return data ? JSON.parse(data) : [];
         } catch (e) {
           console.error('Storage get error:', e);
-          return null;
+          return [];
         }
       },
 
       set(key, value) {
         try {
-          localStorage.setItem(key, JSON.stringify(value));
-          return true;
+          localStorage.setItem(STORAGE_KEYS[key], JSON.stringify(value));
         } catch (e) {
           console.error('Storage set error:', e);
-          return false;
         }
       },
 
-      getExpenses() {
-        return this.get(STORAGE_KEYS.expenses) || [];
-      },
-
+      getExpenses() { return this.get('expenses'); },
       saveExpense(expense) {
         const expenses = this.getExpenses();
-        expenses.push(expense);
-        return this.set(STORAGE_KEYS.expenses, expenses);
+        const index = expenses.findIndex(e => e.id === expense.id);
+        if (index >= 0) {
+          expenses[index] = expense;
+        } else {
+          expenses.push(expense);
+        }
+        this.set('expenses', expenses);
       },
-
       deleteExpense(id) {
         const expenses = this.getExpenses().filter(e => e.id !== id);
-        return this.set(STORAGE_KEYS.expenses, expenses);
+        this.set('expenses', expenses);
       },
 
-      getTodos() {
-        return this.get(STORAGE_KEYS.todos) || [];
-      },
-
+      getTodos() { return this.get('todos'); },
       saveTodo(todo) {
         const todos = this.getTodos();
-        todos.push(todo);
-        return this.set(STORAGE_KEYS.todos, todos);
+        const index = todos.findIndex(t => t.id === todo.id);
+        if (index >= 0) {
+          todos[index] = todo;
+        } else {
+          todos.push(todo);
+        }
+        this.set('todos', todos);
       },
-
-      updateTodo(id, updates) {
-        const todos = this.getTodos().map(t => 
-          t.id === id ? { ...t, ...updates } : t
-        );
-        return this.set(STORAGE_KEYS.todos, todos);
-      },
-
       deleteTodo(id) {
         const todos = this.getTodos().filter(t => t.id !== id);
-        return this.set(STORAGE_KEYS.todos, todos);
+        this.set('todos', todos);
       },
 
-      getStudy() {
-        return this.get(STORAGE_KEYS.study) || [];
-      },
-
+      getStudy() { return this.get('study'); },
       saveStudy(record) {
         const study = this.getStudy();
-        const existingIndex = study.findIndex(s => s.date === record.date);
-        if (existingIndex >= 0) {
-          study[existingIndex] = record;
+        const index = study.findIndex(s => s.date === record.date);
+        if (index >= 0) {
+          study[index] = record;
         } else {
           study.push(record);
         }
-        return this.set(STORAGE_KEYS.study, study);
+        this.set('study', study);
       },
 
-      getBudgetGoals() {
-        return this.get(STORAGE_KEYS.budgetGoals) || {};
-      },
-
-      saveBudgetGoal(yearMonth, data) {
-        const goals = this.getBudgetGoals();
-        goals[yearMonth] = data;
-        return this.set(STORAGE_KEYS.budgetGoals, goals);
-      },
-
+      getBudgetGoals() { return this.get('budget_goals'); },
       getBudgetGoal(yearMonth) {
         const goals = this.getBudgetGoals();
-        return goals[yearMonth] || { budget: DEFAULT_BUDGET, savingsTarget: DEFAULT_SAVINGS };
+        const goal = goals.find(g => g.year_month === yearMonth);
+        return goal || { year_month: yearMonth, budget: DEFAULTS.budget, savings_target: DEFAULTS.savings_target };
+      },
+      saveBudgetGoal(goal) {
+        const goals = this.getBudgetGoals();
+        const index = goals.findIndex(g => g.year_month === goal.year_month);
+        if (index >= 0) {
+          goals[index] = goal;
+        } else {
+          goals.push(goal);
+        }
+        this.set('budget_goals', goals);
       },
 
-      clearAll() {
-        Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
+      getNotes() { return this.get('notes'); },
+      saveNote(note) {
+        const notes = this.getNotes();
+        const index = notes.findIndex(n => n.id === note.id);
+        if (index >= 0) {
+          notes[index] = note;
+        } else {
+          notes.push(note);
+        }
+        this.set('notes', notes);
+      },
+      deleteNote(id) {
+        const notes = this.getNotes().filter(n => n.id !== id);
+        this.set('notes', notes);
+      },
+
+      getReflections() { return this.get('reflections'); },
+      saveReflection(reflection) {
+        const reflections = this.getReflections();
+        const index = reflections.findIndex(r => r.year_month === reflection.year_month);
+        if (index >= 0) {
+          reflections[index] = reflection;
+        } else {
+          reflections.push(reflection);
+        }
+        this.set('reflections', reflections);
       },
 
       exportAll() {
@@ -1725,1035 +1973,1121 @@
           expenses: this.getExpenses(),
           todos: this.getTodos(),
           study: this.getStudy(),
-          budgetGoals: this.getBudgetGoals(),
-          exportDate: new Date().toISOString()
+          budget_goals: this.getBudgetGoals(),
+          notes: this.getNotes(),
+          reflections: this.getReflections(),
+          exported_at: new Date().toISOString()
         };
       },
 
       importAll(data) {
-        if (data.expenses) this.set(STORAGE_KEYS.expenses, data.expenses);
-        if (data.todos) this.set(STORAGE_KEYS.todos, data.todos);
-        if (data.study) this.set(STORAGE_KEYS.study, data.study);
-        if (data.budgetGoals) this.set(STORAGE_KEYS.budgetGoals, data.budgetGoals);
+        if (data.expenses) this.set('expenses', data.expenses);
+        if (data.todos) this.set('todos', data.todos);
+        if (data.study) this.set('study', data.study);
+        if (data.budget_goals) this.set('budget_goals', data.budget_goals);
+        if (data.notes) this.set('notes', data.notes);
+        if (data.reflections) this.set('reflections', data.reflections);
+      },
+
+      clearAll() {
+        Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
       }
     };
 
-    // ==================== Utility Functions ====================
-    function generateId() {
-      return Date.now().toString(36) + Math.random().toString(36).substr(2);
-    }
+    // ==================== Date Utilities ====================
+    const DateUtils = {
+      formatDate(date) {
+        return date.toISOString().split('T')[0];
+      },
 
-    function formatDate(date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    }
+      formatDisplay(date) {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        return `${year}年${month}月${day}日`;
+      },
 
-    function formatMonth(date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      return `${year}年${month}月`;
-    }
+      formatWeekday(date) {
+        const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+        return weekdays[date.getDay()];
+      },
 
-    function formatYearMonth(date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      return `${year}-${month}`;
-    }
+      formatMonth(date) {
+        return `${date.getFullYear()}年${date.getMonth() + 1}月`;
+      },
 
-    function getDaysInMonth(year, month) {
-      return new Date(year, month + 1, 0).getDate();
-    }
+      formatYearMonth(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        return `${year}-${month}`;
+      },
 
-    function isToday(dateStr) {
-      return dateStr === formatDate(new Date());
-    }
+      parseYearMonth(str) {
+        const [year, month] = str.split('-').map(Number);
+        return { year, month: month - 1 };
+      },
 
-    function showToast(message, type = 'default') {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.className = 'toast ' + type;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2500);
-    }
+      addDays(date, days) {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+      },
+
+      addMonths(date, months) {
+        const result = new Date(date);
+        result.setMonth(result.getMonth() + months);
+        return result;
+      },
+
+      getDaysInMonth(year, month) {
+        return new Date(year, month + 1, 0).getDate();
+      }
+    };
+
+    // ==================== Stats Calculator ====================
+    const StatsCalculator = {
+      getMonthExpenses(yearMonth) {
+        return StorageService.getExpenses().filter(e => e.date.startsWith(yearMonth));
+      },
+
+      getMonthIncome(yearMonth) {
+        return this.getMonthExpenses(yearMonth).filter(e => e.type === 'income');
+      },
+
+      getMonthExpense(yearMonth) {
+        return this.getMonthExpenses(yearMonth).filter(e => e.type === 'expense');
+      },
+
+      getTotalIncome(yearMonth) {
+        return this.getMonthIncome(yearMonth).reduce((sum, e) => sum + e.amount, 0);
+      },
+
+      getTotalExpense(yearMonth) {
+        return this.getMonthExpense(yearMonth).reduce((sum, e) => sum + e.amount, 0);
+      },
+
+      getBalance(yearMonth) {
+        return this.getTotalIncome(yearMonth) - this.getTotalExpense(yearMonth);
+      },
+
+      getDayExpenses(date) {
+        const dateStr = DateUtils.formatDate(date);
+        return StorageService.getExpenses().filter(e => e.date === dateStr);
+      },
+
+      getDayIncome(date) {
+        return this.getDayExpenses(date).filter(e => e.type === 'income').reduce((sum, e) => sum + e.amount, 0);
+      },
+
+      getDayExpense(date) {
+        return this.getDayExpenses(date).filter(e => e.type === 'expense').reduce((sum, e) => sum + e.amount, 0);
+      },
+
+      getDayBalance(date) {
+        return this.getDayIncome(date) - this.getDayExpense(date);
+      },
+
+      getBudgetProgress(yearMonth) {
+        const goal = StorageService.getBudgetGoal(yearMonth);
+        const totalExpense = this.getTotalExpense(yearMonth);
+        return {
+          spent: totalExpense,
+          budget: goal.budget,
+          percentage: Math.min(100, (totalExpense / goal.budget) * 100)
+        };
+      },
+
+      getSavingsProgress(yearMonth) {
+        const goal = StorageService.getBudgetGoal(yearMonth);
+        const balance = this.getBalance(yearMonth);
+        const percentage = goal.savings_target > 0 ? Math.max(0, (balance / goal.savings_target) * 100) : 0;
+        return {
+          actual: Math.max(0, balance),
+          target: goal.savings_target,
+          percentage: Math.min(100, percentage)
+        };
+      },
+
+      getMonthStudy(yearMonth) {
+        return StorageService.getStudy().filter(s => s.date.startsWith(yearMonth));
+      },
+
+      getTotalStudyHours(yearMonth) {
+        return this.getMonthStudy(yearMonth).reduce((sum, s) => sum + s.hours, 0);
+      },
+
+      getDayStudy(date) {
+        const dateStr = DateUtils.formatDate(date);
+        const record = StorageService.getStudy().find(s => s.date === dateStr);
+        return record ? record.hours : 0;
+      },
+
+      getDayTodos(date) {
+        const dateStr = DateUtils.formatDate(date);
+        return StorageService.getTodos().filter(t => t.date === dateStr);
+      },
+
+      getDayNotes(date) {
+        const dateStr = DateUtils.formatDate(date);
+        return StorageService.getNotes().filter(n => n.date === dateStr);
+      }
+    };
 
     // ==================== App State ====================
-    const appState = {
+    const AppState = {
       currentDate: new Date(),
       currentMonth: new Date(),
-      expenseType: 'income',
-      tableFilter: 'all',
-      charts: {
-        category: null,
-        trend: null,
-        study: null
+      currentFilter: 'all',
+      selectedTag: null,
+      editingExpense: null
+    };
+
+    // ==================== UI Renderer ====================
+    const UIRenderer = {
+      formatMoney(amount) {
+        return '¥' + amount.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      },
+
+      updateHeader() {
+        const dateStr = DateUtils.formatDate(AppState.currentDate);
+        document.getElementById('headerDate').textContent = dateStr;
+      },
+
+      updateDateSelector() {
+        document.getElementById('currentDateMain').textContent = DateUtils.formatDisplay(AppState.currentDate);
+        document.getElementById('currentDateWeekday').textContent = DateUtils.formatWeekday(AppState.currentDate);
+      },
+
+      updateMonthSelector() {
+        document.getElementById('monthDisplay').textContent = DateUtils.formatMonth(AppState.currentMonth);
+      },
+
+      updateDaySummary() {
+        const income = StatsCalculator.getDayIncome(AppState.currentDate);
+        const expense = StatsCalculator.getDayExpense(AppState.currentDate);
+        const balance = StatsCalculator.getDayBalance(AppState.currentDate);
+
+        document.getElementById('dayIncome').textContent = this.formatMoney(income);
+        document.getElementById('dayExpense').textContent = this.formatMoney(expense);
+        document.getElementById('dayBalance').textContent = (balance >= 0 ? '' : '-') + this.formatMoney(Math.abs(balance));
+        document.getElementById('dayBalance').parentElement.classList.toggle('balance', balance >= 0);
+        document.getElementById('dayBalance').parentElement.style.color = balance >= 0 ? 'var(--primary)' : 'var(--accent)';
+      },
+
+      updateExpenseList() {
+        const container = document.getElementById('expenseList');
+        const expenses = StatsCalculator.getDayExpenses(AppState.currentDate);
+
+        if (expenses.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+              <p>今天还没有收支记录，点+添加一笔吧</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = expenses.map(e => `
+          <div class="record-item" data-id="${e.id}">
+            <div class="record-icon ${e.type}">${CATEGORY_ICONS[e.category] || '📝'}</div>
+            <div class="record-info">
+              <div class="record-category">${e.category}</div>
+              ${e.note ? `<div class="record-note">${e.note}</div>` : ''}
+            </div>
+            <span class="record-amount ${e.type}">${e.type === 'income' ? '+' : '-'}${this.formatMoney(e.amount)}</span>
+            <button class="record-delete" data-id="${e.id}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+            </button>
+          </div>
+        `).join('');
+      },
+
+      updateDetailTable() {
+        const yearMonth = DateUtils.formatYearMonth(AppState.currentDate);
+        let expenses = StatsCalculator.getMonthExpenses(yearMonth);
+
+        if (AppState.currentFilter !== 'all') {
+          expenses = expenses.filter(e => e.type === AppState.currentFilter);
+        }
+
+        expenses.sort((a, b) => new Date(b.date) - new Date(a.date) || b.id.localeCompare(a.id));
+
+        const tbody = document.getElementById('detailTableBody');
+        tbody.innerHTML = expenses.map(e => `
+          <tr data-id="${e.id}">
+            <td>${e.date}</td>
+            <td><span style="color: ${e.type === 'income' ? 'var(--income)' : 'var(--expense)'}">${e.type === 'income' ? '收入' : '支出'}</span></td>
+            <td>${CATEGORY_ICONS[e.category] || ''} ${e.category}</td>
+            <td style="font-family: 'Roboto Mono', monospace; color: ${e.type === 'income' ? 'var(--income)' : 'var(--expense)'}">${e.type === 'income' ? '+' : '-'}${this.formatMoney(e.amount)}</td>
+            <td>${e.note || '-'}</td>
+            <td><button class="record-delete" data-id="${e.id}" style="opacity: 1;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+            </button></td>
+          </tr>
+        `).join('');
+      },
+
+      updateBudgetProgress() {
+        const yearMonth = DateUtils.formatYearMonth(AppState.currentDate);
+        const budgetProgress = StatsCalculator.getBudgetProgress(yearMonth);
+        const savingsProgress = StatsCalculator.getSavingsProgress(yearMonth);
+
+        document.getElementById('budgetProgressText').textContent =
+          `${this.formatMoney(budgetProgress.spent)} / ${this.formatMoney(budgetProgress.budget)}`;
+        const budgetBar = document.getElementById('budgetProgressBar');
+        budgetBar.style.width = budgetProgress.percentage + '%';
+        budgetBar.className = 'progress-fill ' + this.getProgressClass(budgetProgress.percentage);
+
+        document.getElementById('savingsProgressText').textContent =
+          `${this.formatMoney(savingsProgress.actual)} / ${this.formatMoney(savingsProgress.target)}`;
+        const savingsBar = document.getElementById('savingsProgressBar');
+        savingsBar.style.width = savingsProgress.percentage + '%';
+        savingsBar.className = 'progress-fill ' + this.getProgressClass(savingsProgress.percentage);
+      },
+
+      getProgressClass(percentage) {
+        if (percentage < 60) return 'low';
+        if (percentage < 80) return 'medium';
+        return 'high';
+      },
+
+      updateTagNotes() {
+        const container = document.getElementById('tagNotes');
+        const notes = StatsCalculator.getDayNotes(AppState.currentDate);
+
+        if (notes.length === 0) {
+          container.innerHTML = '';
+          return;
+        }
+
+        container.innerHTML = notes.map(n => `
+          <div class="tag-note-item" data-id="${n.id}">
+            <span class="tag-badge ${n.tag}">${n.tag}</span>
+            <span class="tag-note-text">${n.text}</span>
+            <button class="tag-note-delete" data-id="${n.id}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+        `).join('');
+      },
+
+      updateMonthStats() {
+        const yearMonth = DateUtils.formatYearMonth(AppState.currentMonth);
+        const income = StatsCalculator.getTotalIncome(yearMonth);
+        const expense = StatsCalculator.getTotalExpense(yearMonth);
+        const balance = StatsCalculator.getBalance(yearMonth);
+        const studyHours = StatsCalculator.getTotalStudyHours(yearMonth);
+
+        document.getElementById('monthIncome').textContent = this.formatMoney(income);
+        document.getElementById('monthExpense').textContent = this.formatMoney(expense);
+        document.getElementById('monthBalance').textContent = (balance >= 0 ? '' : '-') + this.formatMoney(Math.abs(balance));
+        document.getElementById('monthBalance').parentElement.style.color = balance >= 0 ? 'var(--primary)' : 'var(--accent)';
+        document.getElementById('monthStudyHours').textContent = studyHours + 'h';
+      },
+
+      updateTodoList() {
+        const container = document.getElementById('todoList');
+        const todos = StatsCalculator.getDayTodos(AppState.currentDate);
+
+        if (todos.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+              <p>今天的待办清单是空的</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = todos.map(t => `
+          <div class="todo-item" data-id="${t.id}">
+            <div class="todo-checkbox ${t.completed ? 'checked' : ''}" data-id="${t.id}"></div>
+            <span class="todo-text ${t.completed ? 'completed' : ''}">${t.text}</span>
+            <button class="todo-delete" data-id="${t.id}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+        `).join('');
+      },
+
+      updateStudyHours() {
+        const hours = StatsCalculator.getDayStudy(AppState.currentDate);
+        document.getElementById('todayStudyHours').textContent = hours;
+        document.getElementById('studySlider').value = hours;
+        document.getElementById('studySliderValue').textContent = hours + 'h';
+      },
+
+      updateReflection() {
+        const yearMonth = DateUtils.formatYearMonth(AppState.currentMonth);
+        const reflections = StorageService.getReflections();
+        const reflection = reflections.find(r => r.year_month === yearMonth);
+        document.getElementById('reflectionText').value = reflection ? reflection.text : '';
+      },
+
+      updateStudyChart() {
+        // 只有在学习面板可见时才更新图表
+        if (!document.getElementById('panelStudy').classList.contains('active')) {
+          return;
+        }
+
+        const yearMonth = DateUtils.formatYearMonth(AppState.currentMonth);
+        const { year, month } = DateUtils.parseYearMonth(yearMonth);
+        const daysInMonth = DateUtils.getDaysInMonth(year, month);
+        const study = StatsCalculator.getMonthStudy(yearMonth);
+
+        const labels = [];
+        const data = [];
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          labels.push(day + '日');
+          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const record = study.find(s => s.date === dateStr);
+          data.push(record ? record.hours : 0);
+        }
+
+        const ctx = document.getElementById('studyChart').getContext('2d');
+
+        if (window.studyChartInstance) {
+          window.studyChartInstance.destroy();
+        }
+
+        window.studyChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: '学习时长(小时)',
+              data: data,
+              backgroundColor: 'rgba(45, 90, 74, 0.6)',
+              borderColor: 'rgba(45, 90, 74, 1)',
+              borderWidth: 1,
+              borderRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 12,
+                ticks: {
+                  stepSize: 2,
+                  font: { family: "'Roboto Mono', monospace", size: 11 }
+                },
+                grid: { color: 'rgba(0,0,0,0.05)' }
+              },
+              x: {
+                grid: { display: false },
+                ticks: {
+                  font: { size: 10 },
+                  maxRotation: 0,
+                  callback: function(val, index) {
+                    return index % Math.ceil(labels.length / 15) === 0 ? labels[index] : '';
+                  }
+                }
+              }
+            }
+          }
+        });
+      },
+
+      updateSettingsInputs() {
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const years = [];
+        for (let y = currentYear - 2; y <= currentYear + 1; y++) {
+          years.push(y);
+        }
+
+        const yearSelect = document.getElementById('settingsYear');
+        yearSelect.innerHTML = years.map(y => `<option value="${y}">${y}年</option>`).join('');
+        yearSelect.value = AppState.currentMonth.getFullYear();
+
+        document.getElementById('settingsMonth').value = AppState.currentMonth.getMonth() + 1;
+
+        const yearMonth = DateUtils.formatYearMonth(AppState.currentMonth);
+        const goal = StorageService.getBudgetGoal(yearMonth);
+        document.getElementById('settingsBudget').value = goal.budget;
+        document.getElementById('settingsSavings').value = goal.savings_target;
+      },
+
+      refreshAll() {
+        this.updateHeader();
+        this.updateDateSelector();
+        this.updateMonthSelector();
+        this.updateDaySummary();
+        this.updateExpenseList();
+        this.updateDetailTable();
+        this.updateBudgetProgress();
+        this.updateTagNotes();
+        this.updateMonthStats();
+        this.updateTodoList();
+        this.updateStudyHours();
+        this.updateReflection();
+        this.updateSettingsInputs();
+
+        // 刷新图表（如果有的话）
+        this.updateStudyChart();
       }
     };
 
-    // ==================== Date Navigation ====================
-    function updateDateDisplay() {
-      const dateEl = document.getElementById('currentDate');
-      const dateStr = formatDate(appState.currentDate);
-      const isTodayDate = isToday(dateStr);
-      dateEl.innerHTML = dateStr + (isTodayDate ? '<span class="today-badge">今天</span>' : '');
-    }
+    // ==================== Event Handlers ====================
+    const EventHandlers = {
+      init() {
+        this.bindNavigation();
+        this.bindDateNavigation();
+        this.bindMonthNavigation();
+        this.bindExpenseModal();
+        this.bindExpenseCRUD();
+        this.bindBudgetSavings();
+        this.bindTagNotes();
+        this.bindTodos();
+        this.bindStudySlider();
+        this.bindReflection();
+        this.bindDetailTable();
+        this.bindSettings();
+        this.bindMonthPicker();
+      },
 
-    function navigateDay(delta) {
-      appState.currentDate.setDate(appState.currentDate.getDate() + delta);
-      updateDateDisplay();
-      renderDailyPage();
-    }
+      bindNavigation() {
+        // 恢复上次访问的面板
+        const lastPanel = localStorage.getItem('app_last_panel') || 'panelExpenses';
+        this.switchToPanel(lastPanel);
 
-    document.getElementById('prevDay').addEventListener('click', () => navigateDay(-1));
-    document.getElementById('nextDay').addEventListener('click', () => navigateDay(1));
+        document.querySelectorAll('.nav-item').forEach(btn => {
+          btn.addEventListener('click', () => {
+            this.switchToPanel(btn.dataset.panel);
+          });
+        });
+      },
 
-    // ==================== Month Navigation ====================
-    function updateMonthDisplay() {
-      document.getElementById('currentMonth').textContent = formatMonth(appState.currentMonth);
-    }
+      switchToPanel(panelId) {
+        // 保存当前面板
+        localStorage.setItem('app_last_panel', panelId);
 
-    function navigateMonth(delta) {
-      appState.currentMonth.setMonth(appState.currentMonth.getMonth() + delta);
-      updateMonthDisplay();
-      renderMonthlyPage();
-    }
+        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+        document.querySelector(`.nav-item[data-panel="${panelId}"]`).classList.add('active');
 
-    document.getElementById('prevMonth').addEventListener('click', () => navigateMonth(-1));
-    document.getElementById('nextMonth').addEventListener('click', () => navigateMonth(1));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.getElementById(panelId).classList.add('active');
 
-    // ==================== Tab Navigation ====================
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const page = item.dataset.page;
-        
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-        
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(page + 'Page').classList.add('active');
-
-        // 更新日期导航显示
-        if (page === 'daily') {
-          document.getElementById('dateNav').style.display = 'flex';
-          updateDateDisplay();
-          renderDailyPage();
-        } else {
-          document.getElementById('dateNav').style.display = 'none';
+        // 切换到学习日记面板时刷新所有相关数据
+        if (panelId === 'panelStudy') {
+          AppState.currentMonth = new Date(AppState.currentDate);
+          UIRenderer.updateMonthSelector();
+          UIRenderer.updateMonthStats();
+          UIRenderer.updateTodoList();
+          UIRenderer.updateStudyHours();
+          UIRenderer.updateReflection();
+          UIRenderer.updateStudyChart();
         }
 
-        if (page === 'monthly') {
-          updateMonthDisplay();
-          renderMonthlyPage();
+        if (panelId === 'panelSettings') {
+          UIRenderer.updateSettingsInputs();
         }
 
-        if (page === 'settings') {
-          initSettingsPage();
+        // 消费复盘面板也刷新所有数据
+        if (panelId === 'panelExpenses') {
+          UIRenderer.updateDaySummary();
+          UIRenderer.updateExpenseList();
+          UIRenderer.updateDetailTable();
+          UIRenderer.updateBudgetProgress();
+          UIRenderer.updateTagNotes();
         }
-      });
-    });
+      },
 
-    // ==================== Daily Page ====================
-    function renderDailyPage() {
-      const dateStr = formatDate(appState.currentDate);
-      
-      // 渲染收支
-      const expenses = storageService.getExpenses().filter(e => e.date === dateStr);
-      renderExpenseList(expenses);
-      updateDailySummary(expenses);
+      bindDateNavigation() {
+        document.getElementById('prevDay').addEventListener('click', () => {
+          AppState.currentDate = DateUtils.addDays(AppState.currentDate, -1);
+          UIRenderer.updateDateSelector();
+          UIRenderer.updateDaySummary();
+          UIRenderer.updateExpenseList();
+          UIRenderer.updateDetailTable();
+          UIRenderer.updateTagNotes();
+          // 同时更新学习面板的今日数据
+          if (document.getElementById('panelStudy').classList.contains('active')) {
+            AppState.currentMonth = new Date(AppState.currentDate);
+            UIRenderer.updateMonthSelector();
+            UIRenderer.updateMonthStats();
+            UIRenderer.updateTodoList();
+            UIRenderer.updateStudyHours();
+            UIRenderer.updateReflection();
+            UIRenderer.updateStudyChart();
+          }
+        });
 
-      // 渲染待办
-      const todos = storageService.getTodos().filter(t => t.date === dateStr);
-      renderTodoList(todos);
+        document.getElementById('nextDay').addEventListener('click', () => {
+          AppState.currentDate = DateUtils.addDays(AppState.currentDate, 1);
+          UIRenderer.updateDateSelector();
+          UIRenderer.updateDaySummary();
+          UIRenderer.updateExpenseList();
+          UIRenderer.updateDetailTable();
+          UIRenderer.updateTagNotes();
+          // 同时更新学习面板的今日数据
+          if (document.getElementById('panelStudy').classList.contains('active')) {
+            AppState.currentMonth = new Date(AppState.currentDate);
+            UIRenderer.updateMonthSelector();
+            UIRenderer.updateMonthStats();
+            UIRenderer.updateTodoList();
+            UIRenderer.updateStudyHours();
+            UIRenderer.updateReflection();
+            UIRenderer.updateStudyChart();
+          }
+        });
+      },
 
-      // 渲染学习
-      const studyRecord = storageService.getStudy().find(s => s.date === dateStr);
-      const hours = studyRecord ? studyRecord.hours : 0;
-      document.getElementById('studyHours').textContent = hours;
-      document.getElementById('studySlider').value = hours;
-    }
+      bindMonthNavigation() {
+        document.getElementById('prevMonth').addEventListener('click', () => {
+          AppState.currentMonth = DateUtils.addMonths(AppState.currentMonth, -1);
+          UIRenderer.updateMonthSelector();
+          UIRenderer.updateMonthStats();
+          UIRenderer.updateReflection();
+          UIRenderer.updateStudyChart();
+        });
 
-    function renderExpenseList(expenses) {
-      const container = document.getElementById('expenseList');
-      
-      if (expenses.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">📝</div>
-            <p class="empty-text">今天还没有收支记录</p>
-          </div>
-        `;
-        return;
-      }
+        document.getElementById('nextMonth').addEventListener('click', () => {
+          AppState.currentMonth = DateUtils.addMonths(AppState.currentMonth, 1);
+          UIRenderer.updateMonthSelector();
+          UIRenderer.updateMonthStats();
+          UIRenderer.updateReflection();
+          UIRenderer.updateStudyChart();
+        });
+      },
 
-      container.innerHTML = expenses.map(e => `
-        <div class="record-item" data-id="${e.id}">
-          <div class="record-icon ${e.type}">${e.type === 'income' ? '↑' : '↓'}</div>
-          <div class="record-content">
-            <div class="record-category">${e.category}</div>
-            ${e.note ? `<div class="record-note">${e.note}</div>` : ''}
-          </div>
-          <span class="record-amount ${e.type}">${e.type === 'income' ? '+' : '-'}¥${e.amount.toFixed(2)}</span>
-          <button class="record-delete" onclick="deleteExpense('${e.id}')">🗑</button>
-        </div>
-      `).join('');
-    }
+      bindMonthPicker() {
+        const dropdown = document.getElementById('monthPickerDropdown');
+        const display = document.getElementById('monthDisplay');
 
-    function updateDailySummary(expenses) {
-      const income = expenses.filter(e => e.type === 'income').reduce((sum, e) => sum + e.amount, 0);
-      const expense = expenses.filter(e => e.type === 'expense').reduce((sum, e) => sum + e.amount, 0);
-      const balance = income - expense;
+        display.addEventListener('click', (e) => {
+          e.stopPropagation();
+          dropdown.classList.toggle('active');
+          this.updateMonthPickerUI();
+        });
 
-      document.getElementById('dailyIncome').textContent = `¥${income.toFixed(2)}`;
-      document.getElementById('dailyExpense').textContent = `¥${expense.toFixed(2)}`;
-      document.getElementById('dailyBalance').textContent = `¥${balance.toFixed(2)}`;
-    }
+        document.addEventListener('click', (e) => {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('active');
+          }
+        });
 
-    function deleteExpense(id) {
-      if (confirm('确定要删除这条记录吗？')) {
-        storageService.deleteExpense(id);
-        showToast('删除成功', 'success');
-        renderDailyPage();
-      }
-    }
+        document.getElementById('pickerPrevYear').addEventListener('click', () => {
+          const currentYear = parseInt(document.getElementById('pickerYear').textContent);
+          document.getElementById('pickerYear').textContent = currentYear - 1;
+          this.renderMonthPickerButtons(currentYear - 1);
+        });
 
-    function renderTodoList(todos) {
-      const container = document.getElementById('todoList');
-      
-      if (todos.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state" style="padding: 20px;">
-            <p class="empty-text">今天还没有待办</p>
-          </div>
-        `;
-        return;
-      }
+        document.getElementById('pickerNextYear').addEventListener('click', () => {
+          const currentYear = parseInt(document.getElementById('pickerYear').textContent);
+          document.getElementById('pickerYear').textContent = currentYear + 1;
+          this.renderMonthPickerButtons(currentYear + 1);
+        });
+      },
 
-      container.innerHTML = todos.map(t => `
-        <div class="todo-item" data-id="${t.id}">
-          <div class="todo-checkbox ${t.completed ? 'checked' : ''}" onclick="toggleTodo('${t.id}')">
-            ${t.completed ? '✓' : ''}
-          </div>
-          <span class="todo-text ${t.completed ? 'completed' : ''}">${t.text}</span>
-          <button class="todo-delete" onclick="deleteTodo('${t.id}')">🗑</button>
-        </div>
-      `).join('');
-    }
+      updateMonthPickerUI() {
+        document.getElementById('pickerYear').textContent = AppState.currentMonth.getFullYear();
+        this.renderMonthPickerButtons(AppState.currentMonth.getFullYear());
+      },
 
-    function toggleTodo(id) {
-      const todos = storageService.getTodos();
-      const todo = todos.find(t => t.id === id);
-      if (todo) {
-        storageService.updateTodo(id, { completed: !todo.completed });
-        renderTodoList(storageService.getTodos().filter(t => t.date === formatDate(appState.currentDate)));
-      }
-    }
+      renderMonthPickerButtons(year) {
+        const container = document.getElementById('pickerMonths');
+        const currentMonth = AppState.currentMonth.getMonth();
+        container.innerHTML = Array.from({ length: 12 }, (_, i) => `
+          <button class="month-picker-month ${i === currentMonth ? 'active' : ''}" data-month="${i}">${i + 1}月</button>
+        `).join('');
 
-    function deleteTodo(id) {
-      if (confirm('确定要删除这个待办吗？')) {
-        storageService.deleteTodo(id);
-        showToast('删除成功', 'success');
-        renderTodoList(storageService.getTodos().filter(t => t.date === formatDate(appState.currentDate)));
-      }
-    }
+        container.querySelectorAll('.month-picker-month').forEach(btn => {
+          btn.addEventListener('click', () => {
+            AppState.currentMonth = new Date(year, parseInt(btn.dataset.month), 1);
+            UIRenderer.updateMonthSelector();
+            UIRenderer.updateMonthStats();
+            UIRenderer.updateReflection();
+            UIRenderer.updateStudyChart();
+            this.updateMonthPickerUI();
+            document.getElementById('monthPickerDropdown').classList.remove('active');
+          });
+        });
+      },
 
-    // 添加待办
-    document.getElementById('addTodoBtn').addEventListener('click', addNewTodo);
-    document.getElementById('todoInput').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') addNewTodo();
-    });
+      bindExpenseModal() {
+        const modal = document.getElementById('expenseModal');
 
-    function addNewTodo() {
-      const input = document.getElementById('todoInput');
-      const text = input.value.trim();
-      
-      if (!text) {
-        showToast('请输入待办内容', 'error');
-        return;
-      }
+        document.getElementById('addExpenseBtn').addEventListener('click', () => {
+          AppState.editingExpense = null;
+          this.resetExpenseForm();
+          document.getElementById('expenseModalTitle').textContent = '添加收支记录';
+          modal.classList.add('active');
+        });
 
-      const todo = {
-        id: generateId(),
-        date: formatDate(appState.currentDate),
-        text: text,
-        completed: false
-      };
+        document.getElementById('closeExpenseModal').addEventListener('click', () => {
+          modal.classList.remove('active');
+        });
 
-      storageService.saveTodo(todo);
-      input.value = '';
-      showToast('添加成功', 'success');
-      renderTodoList(storageService.getTodos().filter(t => t.date === formatDate(appState.currentDate)));
-    }
+        document.getElementById('cancelExpenseBtn').addEventListener('click', () => {
+          modal.classList.remove('active');
+        });
 
-    // 学习时长
-    document.getElementById('studySlider').addEventListener('input', (e) => {
-      document.getElementById('studyHours').textContent = e.target.value;
-    });
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) modal.classList.remove('active');
+        });
 
-    document.getElementById('saveStudyBtn').addEventListener('click', () => {
-      const hours = parseFloat(document.getElementById('studySlider').value);
-      const record = {
-        id: generateId(),
-        date: formatDate(appState.currentDate),
-        hours: hours
-      };
+        document.querySelectorAll('.type-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            this.updateCategorySelect(btn.dataset.type);
+          });
+        });
 
-      storageService.saveStudy(record);
-      showToast('学习时长已保存', 'success');
-    });
+        this.updateCategorySelect('income');
 
-    // ==================== Expense Modal ====================
-    const expenseModal = document.getElementById('expenseModal');
+        document.getElementById('saveExpenseBtn').addEventListener('click', () => {
+          this.saveExpense();
+        });
+      },
 
-    document.getElementById('addExpenseBtn').addEventListener('click', () => {
-      expenseModal.classList.add('active');
-      updateCategoryOptions('income');
-    });
+      updateCategorySelect(type) {
+        const select = document.getElementById('categorySelect');
+        const categories = type === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
+        select.innerHTML = categories.map(c => `<option value="${c}">${CATEGORY_ICONS[c]} ${c}</option>`).join('');
+      },
 
-    document.getElementById('cancelExpenseBtn').addEventListener('click', () => {
-      expenseModal.classList.remove('active');
-    });
-
-    expenseModal.addEventListener('click', (e) => {
-      if (e.target === expenseModal) {
-        expenseModal.classList.remove('active');
-      }
-    });
-
-    // 类型选择
-    document.querySelectorAll('.type-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      resetExpenseForm() {
         document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        appState.expenseType = btn.dataset.type;
-        updateCategoryOptions(appState.expenseType);
-      });
-    });
+        document.querySelector('.type-btn.income').classList.add('active');
+        document.getElementById('amountInput').value = '';
+        document.getElementById('noteInput').value = '';
+        this.updateCategorySelect('income');
+      },
 
-    function updateCategoryOptions(type) {
-      const select = document.getElementById('expenseCategory');
-      select.innerHTML = CATEGORIES[type].map(c => `<option value="${c}">${c}</option>`).join('');
-    }
-
-    // 保存收支
-    document.getElementById('confirmExpenseBtn').addEventListener('click', () => {
-      const amount = parseFloat(document.getElementById('expenseAmount').value);
-      const category = document.getElementById('expenseCategory').value;
-      const note = document.getElementById('expenseNote').value.trim();
-
-      if (!amount || amount <= 0) {
-        showToast('请输入有效金额', 'error');
-        return;
-      }
-
-      const expense = {
-        id: generateId(),
-        date: formatDate(appState.currentDate),
-        type: appState.expenseType,
-        amount: amount,
-        category: category,
-        note: note
-      };
-
-      storageService.saveExpense(expense);
-      
-      // 重置表单
-      document.getElementById('expenseAmount').value = '';
-      document.getElementById('expenseNote').value = '';
-      
-      expenseModal.classList.remove('active');
-      showToast('记录已保存', 'success');
-      renderDailyPage();
-    });
-
-    // ==================== 编辑收支 Modal ====================
-    let editingExpenseId = null;
-    let editingExpenseDate = null;
-
-    function openEditExpenseModal(id, date) {
-      const expenses = storageService.getExpenses();
-      const expense = expenses.find(e => e.id === id);
-      if (!expense) return;
-
-      editingExpenseId = id;
-      editingExpenseDate = date || expense.date;
-
-      document.getElementById('editExpenseTitle').textContent = '编辑收支记录';
-      
-      // 设置类型
-      document.querySelectorAll('[data-edit-type]').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.dataset.editType === expense.type) {
-          btn.classList.add('active');
+      saveExpense() {
+        const amount = parseFloat(document.getElementById('amountInput').value);
+        if (!amount || amount <= 0) {
+          alert('请输入有效金额');
+          return;
         }
-      });
 
-      // 更新分类选项
-      const categorySelect = document.getElementById('editExpenseCategory');
-      categorySelect.innerHTML = CATEGORIES[expense.type].map(c => 
-        `<option value="${c}" ${c === expense.category ? 'selected' : ''}>${c}</option>`
-      ).join('');
+        const type = document.querySelector('.type-btn.active').dataset.type;
+        const category = document.getElementById('categorySelect').value;
+        const note = document.getElementById('noteInput').value.trim();
 
-      document.getElementById('editExpenseAmount').value = expense.amount;
-      document.getElementById('editExpenseNote').value = expense.note || '';
-
-      document.getElementById('editExpenseModal').classList.add('active');
-    }
-
-    // 编辑Modal类型切换
-    document.querySelectorAll('[data-edit-type]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('[data-edit-type]').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const type = btn.dataset.editType;
-        const categorySelect = document.getElementById('editExpenseCategory');
-        categorySelect.innerHTML = CATEGORIES[type].map(c => `<option value="${c}">${c}</option>`).join('');
-      });
-    });
-
-    document.getElementById('cancelEditExpenseBtn').addEventListener('click', () => {
-      document.getElementById('editExpenseModal').classList.remove('active');
-    });
-
-    document.getElementById('deleteExpenseBtn').addEventListener('click', () => {
-      if (editingExpenseId && confirm('确定要删除这条记录吗？')) {
-        storageService.deleteExpense(editingExpenseId);
-        showToast('删除成功', 'success');
-        document.getElementById('editExpenseModal').classList.remove('active');
-        renderDailyPage();
-        renderMonthlyPage();
-      }
-    });
-
-    document.getElementById('confirmEditExpenseBtn').addEventListener('click', () => {
-      const type = document.querySelector('[data-edit-type].active').dataset.editType;
-      const amount = parseFloat(document.getElementById('editExpenseAmount').value);
-      const category = document.getElementById('editExpenseCategory').value;
-      const note = document.getElementById('editExpenseNote').value.trim();
-
-      if (!amount || amount <= 0) {
-        showToast('请输入有效金额', 'error');
-        return;
-      }
-
-      const expenses = storageService.getExpenses();
-      const index = expenses.findIndex(e => e.id === editingExpenseId);
-      if (index !== -1) {
-        expenses[index] = {
-          ...expenses[index],
+        const expense = {
+          id: AppState.editingExpense ? AppState.editingExpense.id : Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+          date: DateUtils.formatDate(AppState.currentDate),
           type,
           amount,
           category,
           note
         };
-        storageService.set(STORAGE_KEYS.expenses, expenses);
-      }
 
-      document.getElementById('editExpenseModal').classList.remove('active');
-      showToast('修改成功', 'success');
-      renderDailyPage();
-      renderMonthlyPage();
-    });
+        StorageService.saveExpense(expense);
 
-    // ==================== 编辑预算目标 Modal ====================
-    function openGoalEditModal(type) {
-      const yearMonth = formatYearMonth(appState.currentMonth);
-      const goal = storageService.getBudgetGoal(yearMonth);
+        document.getElementById('expenseModal').classList.remove('active');
+        UIRenderer.updateDaySummary();
+        UIRenderer.updateExpenseList();
+        UIRenderer.updateDetailTable();
+        UIRenderer.updateBudgetProgress();
+        UIRenderer.updateMonthStats();
+      },
 
-      document.getElementById('editGoalTitle').textContent = '编辑预算目标';
-      document.getElementById('editBudgetAmount').value = goal.budget;
-      document.getElementById('editSavingsAmount').value = goal.savingsTarget;
+      bindExpenseCRUD() {
+        document.getElementById('expenseList').addEventListener('click', (e) => {
+          const deleteBtn = e.target.closest('.record-delete');
+          if (deleteBtn) {
+            if (confirm('确定要删除这条记录吗？')) {
+              StorageService.deleteExpense(deleteBtn.dataset.id);
+              UIRenderer.updateDaySummary();
+              UIRenderer.updateExpenseList();
+              UIRenderer.updateDetailTable();
+              UIRenderer.updateBudgetProgress();
+              UIRenderer.updateMonthStats();
+            }
+            return;
+          }
 
-      document.getElementById('editGoalModal').classList.add('active');
-    }
-
-    document.getElementById('cancelEditGoalBtn').addEventListener('click', () => {
-      document.getElementById('editGoalModal').classList.remove('active');
-    });
-
-    document.getElementById('confirmEditGoalBtn').addEventListener('click', () => {
-      const yearMonth = formatYearMonth(appState.currentMonth);
-      const budget = parseFloat(document.getElementById('editBudgetAmount').value) || DEFAULT_BUDGET;
-      const savings = parseFloat(document.getElementById('editSavingsAmount').value) || DEFAULT_SAVINGS;
-
-      storageService.saveBudgetGoal(yearMonth, { budget, savingsTarget: savings });
-
-      document.getElementById('editGoalModal').classList.remove('active');
-      showToast('设置已保存', 'success');
-      renderMonthlyPage();
-    });
-
-    // ==================== 编辑学习时长 Modal ====================
-    let monthlyStudyGoal = 40; // 默认月度学习目标
-
-    function openStudyEditModal() {
-      document.getElementById('editStudyHours').value = monthlyStudyGoal;
-      document.getElementById('editStudyModal').classList.add('active');
-    }
-
-    document.getElementById('cancelEditStudyBtn').addEventListener('click', () => {
-      document.getElementById('editStudyModal').classList.remove('active');
-    });
-
-    document.getElementById('confirmEditStudyBtn').addEventListener('click', () => {
-      const hours = parseFloat(document.getElementById('editStudyHours').value);
-      if (hours >= 0) {
-        monthlyStudyGoal = hours;
-        document.getElementById('editStudyModal').classList.remove('active');
-        showToast('学习目标已保存', 'success');
-        renderMonthlyPage();
-      } else {
-        showToast('请输入有效时长', 'error');
-      }
-    });
-
-    // ==================== 月度添加收支 ====================
-    document.getElementById('addMonthlyExpenseBtn').addEventListener('click', () => {
-      appState.expenseType = 'income';
-      document.querySelectorAll('.type-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.dataset.type === 'income') {
-          btn.classList.add('active');
-        }
-      });
-      document.getElementById('expenseAmount').value = '';
-      document.getElementById('expenseNote').value = '';
-      updateCategoryOptions('income');
-      expenseModal.classList.add('active');
-    });
-
-    // ==================== Monthly Page ====================
-    function renderMonthlyPage() {
-      const yearMonth = formatYearMonth(appState.currentMonth);
-      const year = appState.currentMonth.getFullYear();
-      const month = appState.currentMonth.getMonth();
-
-      // 获取当月数据
-      const allExpenses = storageService.getExpenses();
-      const monthExpenses = allExpenses.filter(e => {
-        const d = new Date(e.date);
-        return d.getFullYear() === year && d.getMonth() === month;
-      });
-
-      const allStudy = storageService.getStudy();
-      const monthStudy = allStudy.filter(s => {
-        const d = new Date(s.date);
-        return d.getFullYear() === year && d.getMonth() === month;
-      });
-
-      // 计算统计数据
-      const totalIncome = monthExpenses.filter(e => e.type === 'income').reduce((sum, e) => sum + e.amount, 0);
-      const totalExpense = monthExpenses.filter(e => e.type === 'expense').reduce((sum, e) => sum + e.amount, 0);
-      const balance = totalIncome - totalExpense;
-      const totalStudyHours = monthStudy.reduce((sum, s) => sum + s.hours, 0);
-
-      // 更新统计卡片
-      document.getElementById('monthIncome').textContent = `¥${totalIncome.toFixed(2)}`;
-      document.getElementById('monthExpense').textContent = `¥${totalExpense.toFixed(2)}`;
-      
-      // 学习时长显示
-      const studyProgress = monthlyStudyGoal > 0 ? Math.min(100, (totalStudyHours / monthlyStudyGoal) * 100) : 0;
-      document.getElementById('monthStudy').textContent = `${totalStudyHours.toFixed(1)}h / ${monthlyStudyGoal}h`;
-      document.getElementById('monthStudyProgress').style.width = `${studyProgress}%`;
-
-      // 渲染进度卡片
-      renderProgressCards(totalExpense, balance, yearMonth);
-
-      // 渲染表格
-      renderExpenseTable(monthExpenses);
-
-      // 渲染图表
-      renderCharts(monthExpenses, monthStudy, year, month);
-    }
-
-    function renderProgressCards(totalExpense, balance, yearMonth) {
-      const goal = storageService.getBudgetGoal(yearMonth);
-      const budgetProgress = Math.min(100, (totalExpense / goal.budget) * 100);
-      const savingsProgress = goal.savingsTarget > 0 ? Math.max(0, (balance / goal.savingsTarget) * 100) : 0;
-
-      const container = document.getElementById('progressCards');
-      container.innerHTML = `
-        <div class="progress-card">
-          <button class="progress-card-edit" onclick="openGoalEditModal('budget')">✏️</button>
-          <div class="progress-card-title">支出预算</div>
-          <div class="progress-card-values">
-            <span class="progress-card-current" style="color: ${budgetProgress > 100 ? 'var(--accent-expense)' : 'var(--accent-primary)'}">¥${totalExpense.toFixed(0)}</span>
-            <span class="progress-card-total">/ ¥${goal.budget.toFixed(0)}</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-bar-fill budget ${budgetProgress > 80 ? 'warning' : ''}" style="width: ${Math.min(100, budgetProgress)}%"></div>
-          </div>
-          <div class="progress-status ${budgetProgress > 100 ? 'warning' : ''}">
-            ${budgetProgress > 100 ? '⚠️ 已超预算！' : budgetProgress > 80 ? '⚠️ 接近预算上限' : `${(100 - budgetProgress).toFixed(0)}% 剩余`}
-          </div>
-        </div>
-        <div class="progress-card">
-          <button class="progress-card-edit" onclick="openGoalEditModal('savings')">✏️</button>
-          <div class="progress-card-title">攒钱进度</div>
-          <div class="progress-card-values">
-            <span class="progress-card-current" style="color: ${balance < 0 ? 'var(--accent-expense)' : 'var(--accent-income)'}">¥${balance.toFixed(0)}</span>
-            <span class="progress-card-total">/ ¥${goal.savingsTarget.toFixed(0)}</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-bar-fill savings" style="width: ${Math.min(100, savingsProgress)}%"></div>
-          </div>
-          <div class="progress-status ${balance < 0 ? 'warning' : ''}">
-            ${balance < 0 ? '⚠️ 未达标，继续加油！' : savingsProgress >= 100 ? '🎉 已达标！' : `${savingsProgress.toFixed(0)}% 完成`}
-          </div>
-        </div>
-      `;
-    }
-
-    function renderExpenseTable(expenses) {
-      const tbody = document.getElementById('expenseTableBody');
-      let filtered = expenses;
-
-      if (appState.tableFilter !== 'all') {
-        filtered = expenses.filter(e => e.type === appState.tableFilter);
-      }
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">暂无记录</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = filtered.map(e => `
-        <tr data-id="${e.id}" class="expense-row">
-          <td><span class="row-date">${e.date}</span></td>
-          <td><span class="type-badge ${e.type} row-type">${e.type === 'income' ? '收入' : '支出'}</span></td>
-          <td style="font-family: 'JetBrains Mono', monospace; color: ${e.type === 'income' ? 'var(--accent-income)' : 'var(--accent-expense)'}">
-            <span class="row-amount">${e.type === 'income' ? '+' : '-'}¥${e.amount.toFixed(2)}</span>
-          </td>
-          <td><span class="row-category">${e.category}</span></td>
-          <td><span class="row-note">${e.note || '-'}</span></td>
-          <td>
-            <button class="table-action-btn edit" onclick="editExpenseInTable('${e.id}')">编辑</button>
-            <button class="table-action-btn delete" onclick="deleteExpenseFromTable('${e.id}')">删除</button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    // 编辑收支明细表中的记录
-    function editExpenseInTable(id) {
-      const expenses = storageService.getExpenses();
-      const expense = expenses.find(e => e.id === id);
-      if (!expense) return;
-
-      const row = document.querySelector(`tr[data-id="${id}"]`);
-      const type = expense.type;
-      const categories = CATEGORIES[type];
-
-      row.innerHTML = `
-        <td><span class="row-date">${expense.date}</span></td>
-        <td>
-          <select class="inline-edit-select edit-type" onchange="updateEditTypeOptions(this, '${id}')">
-            <option value="income" ${type === 'income' ? 'selected' : ''}>收入</option>
-            <option value="expense" ${type === 'expense' ? 'selected' : ''}>支出</option>
-          </select>
-        </td>
-        <td>
-          <input type="number" class="inline-edit-input amount" value="${expense.amount}" step="0.01" min="0">
-        </td>
-        <td>
-          <select class="inline-edit-select edit-category">
-            ${categories.map(c => `<option value="${c}" ${c === expense.category ? 'selected' : ''}>${c}</option>`).join('')}
-          </select>
-        </td>
-        <td>
-          <input type="text" class="inline-edit-input" value="${expense.note || ''}" placeholder="备注">
-        </td>
-        <td>
-          <button class="table-action-btn save" onclick="saveExpenseEdit('${id}')">保存</button>
-          <button class="table-action-btn delete" onclick="cancelExpenseEdit('${id}')">取消</button>
-        </td>
-      `;
-    }
-
-    // 更新编辑时的分类选项
-    function updateEditTypeOptions(select, id) {
-      const newType = select.value;
-      const categories = CATEGORIES[newType];
-      const row = document.querySelector(`tr[data-id="${id}"]`);
-      const categorySelect = row.querySelector('.edit-category');
-      categorySelect.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
-    }
-
-    // 保存编辑
-    function saveExpenseEdit(id) {
-      const row = document.querySelector(`tr[data-id="${id}"]`);
-      const typeSelect = row.querySelector('.edit-type');
-      const amountInput = row.querySelector('.inline-edit-input.amount');
-      const categorySelect = row.querySelector('.edit-category');
-      const noteInput = row.querySelector('.inline-edit-input:not(.amount)');
-
-      const expenses = storageService.getExpenses();
-      const expenseIndex = expenses.findIndex(e => e.id === id);
-      if (expenseIndex === -1) return;
-
-      const newType = typeSelect.value;
-      const newAmount = parseFloat(amountInput.value);
-      const newCategory = categorySelect.value;
-      const newNote = noteInput.value.trim();
-
-      if (!newAmount || newAmount <= 0) {
-        showToast('请输入有效金额', 'error');
-        return;
-      }
-
-      expenses[expenseIndex] = {
-        ...expenses[expenseIndex],
-        type: newType,
-        amount: newAmount,
-        category: newCategory,
-        note: newNote
-      };
-      storageService.set(STORAGE_KEYS.expenses, expenses);
-
-      showToast('修改成功', 'success');
-      renderMonthlyPage();
-    }
-
-    // 取消编辑
-    function cancelExpenseEdit(id) {
-      renderMonthlyPage();
-    }
-
-    // 删除收支明细表中的记录
-    function deleteExpenseFromTable(id) {
-      if (confirm('确定要删除这条记录吗？')) {
-        storageService.deleteExpense(id);
-        showToast('删除成功', 'success');
-        renderMonthlyPage();
-      }
-    }
-
-    // 表格筛选
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        appState.tableFilter = btn.dataset.filter;
-        
-        const year = appState.currentMonth.getFullYear();
-        const month = appState.currentMonth.getMonth();
-        const monthExpenses = storageService.getExpenses().filter(e => {
-          const d = new Date(e.date);
-          return d.getFullYear() === year && d.getMonth() === month;
+          const item = e.target.closest('.record-item');
+          if (item) {
+            const expenses = StatsCalculator.getDayExpenses(AppState.currentDate);
+            const expense = expenses.find(exp => exp.id === item.dataset.id);
+            if (expense) {
+              this.editExpense(expense);
+            }
+          }
         });
-        renderExpenseTable(monthExpenses);
-      });
-    });
+      },
 
-    // 表格折叠
-    document.getElementById('tableToggle').addEventListener('click', () => {
-      const container = document.getElementById('tableContainer');
-      const arrow = document.getElementById('tableArrow');
-      container.classList.toggle('expanded');
-      arrow.classList.toggle('expanded');
-    });
+      editExpense(expense) {
+        AppState.editingExpense = expense;
 
-    // ==================== Charts ====================
-    function renderCharts(monthExpenses, monthStudy, year, month) {
-      const daysInMonth = getDaysInMonth(year, month);
-      
-      // 生成每日数据
-      const dailyData = {};
-      for (let d = 1; d <= daysInMonth; d++) {
-        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-        dailyData[dateStr] = { income: 0, expense: 0, study: 0 };
-      }
+        document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector(`.type-btn.${expense.type}`).classList.add('active');
 
-      monthExpenses.forEach(e => {
-        if (dailyData[e.date]) {
-          if (e.type === 'income') dailyData[e.date].income += e.amount;
-          else dailyData[e.date].expense += e.amount;
-        }
-      });
+        document.getElementById('amountInput').value = expense.amount;
+        this.updateCategorySelect(expense.type);
+        document.getElementById('categorySelect').value = expense.category;
+        document.getElementById('noteInput').value = expense.note || '';
 
-      monthStudy.forEach(s => {
-        if (dailyData[s.date]) {
-          dailyData[s.date].study += s.hours;
-        }
-      });
+        document.getElementById('expenseModalTitle').textContent = '编辑收支记录';
+        document.getElementById('expenseModal').classList.add('active');
+      },
 
-      const labels = Object.keys(dailyData).map(d => d.split('-')[2]);
-      const incomeData = Object.values(dailyData).map(d => d.income);
-      const expenseData = Object.values(dailyData).map(d => d.expense);
-      const studyData = Object.values(dailyData).map(d => d.study);
+      bindDetailTable() {
+        document.getElementById('toggleDetail').addEventListener('click', function() {
+          this.classList.toggle('collapsed');
+          document.getElementById('detailSection').classList.toggle('collapsed');
+        });
 
-      // 销毁旧图表
-      if (appState.charts.category) appState.charts.category.destroy();
-      if (appState.charts.trend) appState.charts.trend.destroy();
-      if (appState.charts.study) appState.charts.study.destroy();
+        document.getElementById('filterGroup').addEventListener('click', (e) => {
+          if (e.target.classList.contains('filter-btn')) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            AppState.currentFilter = e.target.dataset.filter;
+            UIRenderer.updateDetailTable();
+          }
+        });
 
-      // 支出分类饼图
-      const categoryMap = {};
-      monthExpenses.filter(e => e.type === 'expense').forEach(e => {
-        categoryMap[e.category] = (categoryMap[e.category] || 0) + e.amount;
-      });
+        document.getElementById('detailTableBody').addEventListener('click', (e) => {
+          const deleteBtn = e.target.closest('.record-delete');
+          if (deleteBtn) {
+            if (confirm('确定要删除这条记录吗？')) {
+              StorageService.deleteExpense(deleteBtn.dataset.id);
+              UIRenderer.updateDaySummary();
+              UIRenderer.updateExpenseList();
+              UIRenderer.updateDetailTable();
+              UIRenderer.updateBudgetProgress();
+              UIRenderer.updateMonthStats();
+            }
+          }
+        });
+      },
 
-      const categoryLabels = Object.keys(categoryMap);
-      const categoryValues = Object.values(categoryMap);
-      const categoryColors = [
-        '#E07A5F', '#3D5A80', '#2D936C', '#EE6C4D', '#7B68EE',
-        '#F4A261', '#2A9D8F', '#E9C46A'
-      ];
+      bindBudgetSavings() {
+        document.getElementById('saveBudgetBtn').addEventListener('click', () => {
+          const yearMonth = DateUtils.formatYearMonth(AppState.currentDate);
+          const goal = StorageService.getBudgetGoal(yearMonth);
+          const budget = parseFloat(document.getElementById('budgetInput').value);
+          if (budget && budget > 0) {
+            goal.budget = budget;
+            StorageService.saveBudgetGoal(goal);
+            UIRenderer.updateBudgetProgress();
+            alert('预算已保存');
+          }
+        });
 
-      appState.charts.category = new Chart(document.getElementById('categoryChart'), {
-        type: 'doughnut',
-        data: {
-          labels: categoryLabels.length > 0 ? categoryLabels : ['无数据'],
-          datasets: [{
-            data: categoryValues.length > 0 ? categoryValues : [1],
-            backgroundColor: categoryValues.length > 0 ? categoryColors.slice(0, categoryLabels.length) : ['#E8E4DD'],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'right',
-              labels: {
-                font: { family: "'Noto Sans SC', sans-serif", size: 12 }
+        document.getElementById('saveSavingsBtn').addEventListener('click', () => {
+          const yearMonth = DateUtils.formatYearMonth(AppState.currentDate);
+          const goal = StorageService.getBudgetGoal(yearMonth);
+          const savings = parseFloat(document.getElementById('savingsInput').value);
+          if (savings && savings > 0) {
+            goal.savings_target = savings;
+            StorageService.saveBudgetGoal(goal);
+            UIRenderer.updateBudgetProgress();
+            alert('攒钱目标已保存');
+          }
+        });
+      },
+
+      bindTagNotes() {
+        document.getElementById('tagSelector').addEventListener('click', (e) => {
+          const option = e.target.closest('.tag-option');
+          if (option) {
+            document.querySelectorAll('.tag-option').forEach(o => o.classList.remove('selected'));
+            option.classList.add('selected');
+            AppState.selectedTag = option.dataset.tag;
+          }
+        });
+
+        document.getElementById('saveTagNoteBtn').addEventListener('click', () => {
+          const text = document.getElementById('tagNoteInput').value.trim();
+          if (!text) {
+            alert('请输入内容');
+            return;
+          }
+          if (!AppState.selectedTag) {
+            alert('请选择标签');
+            return;
+          }
+
+          const note = {
+            id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+            date: DateUtils.formatDate(AppState.currentDate),
+            tag: AppState.selectedTag,
+            text
+          };
+
+          StorageService.saveNote(note);
+          document.getElementById('tagNoteInput').value = '';
+          document.querySelectorAll('.tag-option').forEach(o => o.classList.remove('selected'));
+          AppState.selectedTag = null;
+          UIRenderer.updateTagNotes();
+        });
+
+        document.getElementById('tagNotes').addEventListener('click', (e) => {
+          const deleteBtn = e.target.closest('.tag-note-delete');
+          if (deleteBtn) {
+            if (confirm('确定要删除这条记录吗？')) {
+              StorageService.deleteNote(deleteBtn.dataset.id);
+              UIRenderer.updateTagNotes();
+            }
+          }
+        });
+      },
+
+      bindTodos() {
+        document.getElementById('addTodoBtn').addEventListener('click', () => this.addTodo());
+
+        document.getElementById('todoInput').addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') this.addTodo();
+        });
+
+        document.getElementById('todoList').addEventListener('click', (e) => {
+          const checkbox = e.target.closest('.todo-checkbox');
+          if (checkbox) {
+            const todos = StatsCalculator.getDayTodos(AppState.currentDate);
+            const todo = todos.find(t => t.id === checkbox.dataset.id);
+            if (todo) {
+              todo.completed = !todo.completed;
+              StorageService.saveTodo(todo);
+              UIRenderer.updateTodoList();
+            }
+            return;
+          }
+
+          const deleteBtn = e.target.closest('.todo-delete');
+          if (deleteBtn) {
+            if (confirm('确定要删除这条待办吗？')) {
+              StorageService.deleteTodo(deleteBtn.dataset.id);
+              UIRenderer.updateTodoList();
+            }
+          }
+        });
+      },
+
+      addTodo() {
+        const input = document.getElementById('todoInput');
+        const text = input.value.trim();
+        if (!text) return;
+
+        const todo = {
+          id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+          date: DateUtils.formatDate(AppState.currentDate),
+          text,
+          completed: false
+        };
+
+        StorageService.saveTodo(todo);
+        input.value = '';
+        UIRenderer.updateTodoList();
+      },
+
+      bindStudySlider() {
+        const slider = document.getElementById('studySlider');
+        const display = document.getElementById('studySliderValue');
+
+        slider.addEventListener('input', () => {
+          display.textContent = slider.value + 'h';
+        });
+
+        slider.addEventListener('change', () => {
+          const hours = parseFloat(slider.value);
+          const record = {
+            date: DateUtils.formatDate(AppState.currentDate),
+            hours
+          };
+          StorageService.saveStudy(record);
+          document.getElementById('todayStudyHours').textContent = hours;
+          UIRenderer.updateMonthStats();
+          if (document.getElementById('panelStudy').classList.contains('active')) {
+            UIRenderer.updateStudyChart();
+          }
+        });
+      },
+
+      bindReflection() {
+        document.getElementById('saveReflectionBtn').addEventListener('click', () => {
+          const yearMonth = DateUtils.formatYearMonth(AppState.currentMonth);
+          const text = document.getElementById('reflectionText').value.trim();
+          StorageService.saveReflection({ year_month: yearMonth, text });
+          alert('反思已保存');
+        });
+      },
+
+      bindSettings() {
+        document.getElementById('settingsSaveBtn').addEventListener('click', () => {
+          const year = document.getElementById('settingsYear').value;
+          const month = document.getElementById('settingsMonth').value;
+          const yearMonth = `${year}-${String(month).padStart(2, '0')}`;
+          const goal = StorageService.getBudgetGoal(yearMonth);
+
+          const budget = parseFloat(document.getElementById('settingsBudget').value);
+          const savings = parseFloat(document.getElementById('settingsSavings').value);
+
+          if (budget && budget > 0) goal.budget = budget;
+          if (savings && savings > 0) goal.savings_target = savings;
+
+          StorageService.saveBudgetGoal(goal);
+          alert('设置已保存');
+          UIRenderer.updateBudgetProgress();
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', () => {
+          const data = StorageService.exportAll();
+          const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `日知录_${DateUtils.formatDate(new Date())}.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+        });
+
+        document.querySelector('.settings-btn.import input').addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            try {
+              const data = JSON.parse(event.target.result);
+              if (confirm('导入将覆盖现有数据，确定继续吗？')) {
+                StorageService.importAll(data);
+                UIRenderer.refreshAll();
+                alert('数据导入成功');
               }
+            } catch (err) {
+              alert('文件格式错误');
             }
+          };
+          reader.readAsText(file);
+        });
+
+        document.getElementById('clearDataBtn').addEventListener('click', () => {
+          if (confirm('确定要清除所有数据吗？此操作不可恢复！')) {
+            StorageService.clearAll();
+            UIRenderer.refreshAll();
+            alert('所有数据已清除');
           }
-        }
-      });
+        });
 
-      // 收支趋势图
-      appState.charts.trend = new Chart(document.getElementById('trendChart'), {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: '收入',
-              data: incomeData,
-              borderColor: '#2D936C',
-              backgroundColor: 'rgba(45, 147, 108, 0.1)',
-              fill: true,
-              tension: 0.3
-            },
-            {
-              label: '支出',
-              data: expenseData,
-              borderColor: '#E07A5F',
-              backgroundColor: 'rgba(224, 122, 95, 0.1)',
-              fill: true,
-              tension: 0.3
+        document.getElementById('loadDemoBtn').addEventListener('click', () => {
+          if (!confirm('加载示例数据将覆盖现有数据，确定继续吗？')) return;
+
+          const now = new Date();
+          const demoData = { expenses: [], todos: [], study: [], budget_goals: [], notes: [], reflections: [] };
+
+          // 过去3天数据
+          for (let i = 3; i >= 1; i--) {
+            const date = DateUtils.addDays(now, -i);
+            const dateStr = DateUtils.formatDate(date);
+
+            // 每天一条收入
+            demoData.expenses.push({
+              id: `demo_income_${i}`,
+              date: dateStr,
+              type: 'income',
+              amount: 5000 + Math.random() * 2000,
+              category: '工资',
+              note: '月薪'
+            });
+
+            // 每天2-3条支出
+            const expenseCategories = ['饮食', '交通', '购物', '娱乐'];
+            for (let j = 0; j < 2 + Math.floor(Math.random() * 2); j++) {
+              demoData.expenses.push({
+                id: `demo_expense_${i}_${j}`,
+                date: dateStr,
+                type: 'expense',
+                amount: 20 + Math.random() * 200,
+                category: expenseCategories[Math.floor(Math.random() * expenseCategories.length)],
+                note: ''
+              });
             }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              labels: { font: { family: "'Noto Sans SC', sans-serif", size: 12 } }
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 } }
-            },
-            x: {
-              ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 } }
-            }
+
+            // 每天待办
+            demoData.todos.push({
+              id: `demo_todo_${i}`,
+              date: dateStr,
+              text: i === 1 ? '完成项目报告' : '阅读技术书籍',
+              completed: i > 1
+            });
+
+            // 学习记录
+            demoData.study.push({
+              date: dateStr,
+              hours: 1.5 + Math.random() * 2
+            });
           }
-        }
-      });
 
-      // 学习时长柱状图
-      appState.charts.study = new Chart(document.getElementById('studyChart'), {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: '学习时长',
-            data: studyData,
-            backgroundColor: 'rgba(123, 104, 238, 0.7)',
-            borderRadius: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              labels: { font: { family: "'Noto Sans SC', sans-serif", size: 12 } }
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 12,
-              ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 } }
-            },
-            x: {
-              ticks: { font: { family: "'JetBrains Mono', monospace", size: 10 } }
-            }
-          }
-        }
-      });
-    }
-
-    // ==================== Settings Page ====================
-    function initSettingsPage() {
-      const now = new Date();
-      const year = now.getFullYear();
-      
-      // 初始化年份选择器
-      const yearSelect = document.getElementById('settingsYear');
-      yearSelect.innerHTML = '';
-      for (let y = year - 2; y <= year + 1; y++) {
-        yearSelect.innerHTML += `<option value="${y}">${y}年</option>`;
-      }
-      yearSelect.value = year;
-
-      // 初始化月份选择器
-      const monthSelect = document.getElementById('settingsMonth');
-      monthSelect.innerHTML = '';
-      for (let m = 1; m <= 12; m++) {
-        monthSelect.innerHTML += `<option value="${m}">${m}月</option>`;
-      }
-      monthSelect.value = now.getMonth() + 1;
-
-      // 加载当前设置
-      loadSettings();
-    }
-
-    function loadSettings() {
-      const year = parseInt(document.getElementById('settingsYear').value);
-      const month = parseInt(document.getElementById('settingsMonth').value);
-      const yearMonth = `${year}-${String(month).padStart(2, '0')}`;
-      const goal = storageService.getBudgetGoal(yearMonth);
-
-      document.getElementById('budgetInput').value = goal.budget;
-      document.getElementById('savingsInput').value = goal.savingsTarget;
-    }
-
-    // 设置变更时重新加载
-    document.getElementById('settingsYear').addEventListener('change', loadSettings);
-    document.getElementById('settingsMonth').addEventListener('change', loadSettings);
-
-    // 保存设置
-    document.getElementById('saveSettingsBtn').addEventListener('click', () => {
-      const year = parseInt(document.getElementById('settingsYear').value);
-      const month = parseInt(document.getElementById('settingsMonth').value);
-      const yearMonth = `${year}-${String(month).padStart(2, '0')}`;
-      const budget = parseFloat(document.getElementById('budgetInput').value) || DEFAULT_BUDGET;
-      const savings = parseFloat(document.getElementById('savingsInput').value) || DEFAULT_SAVINGS;
-
-      storageService.saveBudgetGoal(yearMonth, { budget, savingsTarget: savings });
-      showToast('设置已保存', 'success');
-    });
-
-    // 导出数据
-    document.getElementById('exportBtn').addEventListener('click', () => {
-      const data = storageService.exportAll();
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `量化生活数据_${formatDate(new Date())}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-      showToast('数据已导出', 'success');
-    });
-
-    // 清除数据
-    document.getElementById('clearDataBtn').addEventListener('click', () => {
-      if (confirm('确定要清除所有数据吗？此操作不可恢复！')) {
-        if (confirm('再次确认：所有数据将被永久删除！')) {
-          storageService.clearAll();
-          showToast('所有数据已清除', 'success');
-          renderDailyPage();
-          renderMonthlyPage();
-        }
-      }
-    });
-
-    // 加载示例数据
-    document.getElementById('loadSampleBtn').addEventListener('click', () => {
-      if (confirm('将用示例数据覆盖现有数据，确定继续吗？')) {
-        loadSampleData();
-        showToast('示例数据已加载', 'success');
-        renderDailyPage();
-        renderMonthlyPage();
-      }
-    });
-
-    function loadSampleData() {
-      const today = new Date();
-      
-      // 生成过去3天的数据
-      for (let i = 3; i >= 1; i--) {
-        const date = new Date(today);
-        date.setDate(date.getDate() - i);
-        const dateStr = formatDate(date);
-        const yearMonth = formatYearMonth(date);
-
-        // 收支记录
-        if (i === 3) {
-          storageService.saveExpense({
-            id: generateId(), date: dateStr, type: 'income',
-            amount: 8000, category: '工资', note: '月薪'
+          // 当前月份预算目标
+          const currentYearMonth = DateUtils.formatYearMonth(now);
+          demoData.budget_goals.push({
+            year_month: currentYearMonth,
+            budget: 8000,
+            savings_target: 3000
           });
-        }
-        storageService.saveExpense({
-          id: generateId(), date: dateStr, type: 'expense',
-          amount: 35 + Math.random() * 20, category: '餐饮', note: '午餐'
-        });
-        storageService.saveExpense({
-          id: generateId(), date: dateStr, type: 'expense',
-          amount: 120 + Math.random() * 80, category: '购物', note: '日用品'
-        });
 
-        // 待办
-        storageService.saveTodo({
-          id: generateId(), date: dateStr,
-          text: '完成工作日报', completed: i % 2 === 0
-        });
-        storageService.saveTodo({
-          id: generateId(), date: dateStr,
-          text: '阅读技术文档', completed: false
-        });
+          // 标签记录
+          demoData.notes.push({
+            id: 'demo_note_1',
+            date: DateUtils.formatDate(DateUtils.addDays(now, -1)),
+            tag: '省钱',
+            text: '使用优惠券省了50元'
+          });
 
-        // 学习
-        storageService.saveStudy({
-          id: generateId(), date: dateStr, hours: 2 + Math.random() * 1.5
+          demoData.notes.push({
+            id: 'demo_note_2',
+            date: DateUtils.formatDate(DateUtils.addDays(now, -2)),
+            tag: '投资',
+            text: '今天学到了定投的复利效应'
+          });
+
+          // 反思日记
+          demoData.reflections.push({
+            year_month: currentYearMonth,
+            text: '本周完成了月度目标，下周要继续努力提升学习效率。'
+          });
+
+          StorageService.importAll(demoData);
+          UIRenderer.refreshAll();
+          alert('示例数据加载成功！');
         });
       }
-
-      // 设置当前月预算
-      const currentYearMonth = formatYearMonth(today);
-      storageService.saveBudgetGoal(currentYearMonth, {
-        budget: 5000,
-        savingsTarget: 2000
-      });
-    }
+    };
 
     // ==================== Initialize ====================
-    function init() {
-      // 检查是否是首次使用
-      const hasData = storageService.getExpenses().length > 0;
-      
-      if (!hasData) {
-        // 加载示例数据
-        loadSampleData();
-      }
+    document.addEventListener('DOMContentLoaded', () => {
+      UIRenderer.refreshAll();
+      EventHandlers.init();
 
-      updateDateDisplay();
-      renderDailyPage();
-    }
-
-    // 页面加载完成后初始化
-    document.addEventListener('DOMContentLoaded', init);
+      // 监听日期变化，更新学习面板
+      setInterval(() => {
+        if (document.getElementById('panelStudy').classList.contains('active')) {
+          UIRenderer.updateStudyHours();
+          UIRenderer.updateTodoList();
+        }
+      }, 1000);
+    });
   </script>
 </body>
 </html>
